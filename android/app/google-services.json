@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "365336777136",
+    "firebase_url": "https://financial-controlee-app.firebaseio.com",
+    "project_id": "financial-controlee-app",
+    "storage_bucket": "financial-controlee-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365336777136:android:01006e0a443d9895ef4675",
+        "android_client_info": {
+          "package_name": "com.rodrigues.financialcontroleeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "365336777136-2ngthbbniaqfsd7fr5kecvjjk9d2a516.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rodrigues.financialcontroleeapp",
+            "certificate_hash": "d466feb9043ec5312c4eb2c3754fc6ab94920c48"
+          }
+        },
+        {
+          "client_id": "365336777136-0u2v9s4sk5u2csoagp5lffj6bv5rj65i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDN4YSVuWunsgJIu_Q_-Ayfvtii-091EnE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "365336777136-0u2v9s4sk5u2csoagp5lffj6bv5rj65i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "365336777136-3i0p3urpst2i4s7ltuartmp1mpqsc675.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rodrigues.financialcontroleeapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
