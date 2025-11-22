@@ -43,3 +43,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# VS Code will place build artifacts here
+/.vscode/android-app-debug
+/.vscode/android-app-profile
+/.vscode/android-app-release
+/.vscode
+
