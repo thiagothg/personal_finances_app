@@ -8,7 +8,7 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('Dashboard', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -34,17 +34,17 @@ class DashboardPage extends StatelessWidget {
               elevation: 0,
               color: Theme.of(context).colorScheme.primaryContainer,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: const Padding(
-                padding: EdgeInsets.all(20),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Current Balance',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(height: 8),
-                    Text('\$0.00', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    Text('\$0.00', style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
@@ -53,9 +53,9 @@ class DashboardPage extends StatelessWidget {
             const SizedBox(height: 24),
 
             /// --- Recent Transactions Section ---
-            const Text(
+            Text(
               'Recent Transactions',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
             ),
 
             const SizedBox(height: 12),
@@ -74,9 +74,9 @@ class DashboardPage extends StatelessWidget {
             const SizedBox(height: 24),
 
             /// --- Goals Overview Section ---
-            const Text(
+            Text(
               'Goals Overview',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
             ),
 
             const SizedBox(height: 12),

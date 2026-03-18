@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'core/theme.dart';
+import 'core/theme/app_theme.dart';
 
 // pages
 import 'features/auth/presentation/pages/login_page.dart';
+import 'features/auth/presentation/pages/splash_page.dart';
 import 'features/dashboard/presentation/pages/dashboard_page.dart';
+
+// domain
+import 'domain/entities/auth_state.dart';
 
 // auth provider
 import 'features/auth/providers.dart';
@@ -19,10 +23,25 @@ final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authControllerProvider);
 
   return GoRouter(
-    initialLocation: authState.status == AuthStatus.authenticated ? '/' : '/login',
+    initialLocation: authState.status == AuthStatus.authenticated
+        ? '/'
+        : '/splash',
     routes: <RouteBase>[
-      GoRoute(path: '/login', name: 'login', builder: (context, state) => const LoginPage()),
-      GoRoute(path: '/', name: 'dashboard', builder: (context, state) => const DashboardPage()),
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/',
+        name: 'dashboard',
+        builder: (context, state) => const DashboardPage(),
+      ),
+      GoRoute(
+        path: '/splash',
+        name: 'splash',
+        builder: (c, s) => const SplashPage(),
+      ),
       // GoRoute(
       //   path: '/add',
       //   name: 'add_transaction',
@@ -36,14 +55,20 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
     // redirect callback runs on navigation attempts and when `refreshListenable` triggers.
     redirect: (context, state) {
-      final loggedIn = authState.status == AuthStatus.authenticated;
-      final loggingIn = state.matchedLocation == '/login';
+      // If auth is still initializing, don't redirect — allow splash to show.
+      if (authState.status == AuthStatus.unknown) return null;
 
-      if (!loggedIn && !loggingIn) {
+      final loggedIn = authState.status == AuthStatus.authenticated;
+      // allow both login and splash to proceed when unauthenticated
+      final loggingInOrSplash =
+          state.matchedLocation == '/login' ||
+          state.matchedLocation == '/splash';
+
+      if (!loggedIn && !loggingInOrSplash) {
         // Not logged in, try to go to login
         return '/login';
       }
-      if (loggedIn && loggingIn) {
+      if (loggedIn && loggingInOrSplash) {
         // Already logged in, prevent going back to login
         return '/';
       }
@@ -63,6 +88,10 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
 
-    return MaterialApp.router(routerConfig: router, title: 'Finance App', theme: appTheme);
+    return MaterialApp.router(
+      routerConfig: router,
+      title: 'Finance App',
+      theme: appTheme,
+    );
   }
 }

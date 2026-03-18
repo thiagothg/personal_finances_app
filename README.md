@@ -14,25 +14,34 @@
 ```
 flutter_finance_app/
 ├─ lib/
-│ ├─ main.dart
-│ ├─ app.dart
-│ ├─ src/
-│ │ ├─ core/
-│ │ │ ├─ constants.dart
-│ │ │ └─ theme.dart
-│ │ ├─ features/
-│ │ │ ├─ auth/
-│ │ │ ├─ transactions/
-│ │ │ │ ├─ data/
-│ │ │ │ │ ├─ models/
-│ │ │ │ │ └─ datasources/
-│ │ │ │ └─ presentation/
-│ │ │ ├─ categories/
-│ │ │ ├─ goals/
-│ │ │ └─ analytics/
+│ ├─ core/
+│ │ ├─ theme/
+│ │ ├─ router/
+│ │ ├─ constants/
+│ │ └─ utils/
+│ ├─ shared/
+│ │ ├─ widgets/
 │ │ ├─ services/
-│ │ │ └─ database/
-│ │ └─ shared_widgets/
+│ │ └─ providers/
+│ ├─ features/
+│ │ ├─ dashboard/
+│ │ ├─ transactions/
+│ │ ├─ accounts/
+│ │ ├─ people/
+│ │ ├─ categories/
+│ │ ├─ investments/
+│ │ └─ settings/
+│ ├─ data/
+│ │ ├─ models/
+│ │ ├─ dto/
+│ │ ├─ repositories/
+│ │ └─ datasource/
+│ ├─ domain/
+│ │ ├─ entities/
+│ │ ├─ repositories/
+│ │ └─ usecases/
+│ ├─ app.dart
+│ └─ main.dart
 ├─ test/
 │ ├─ unit/
 │ └─ widget/

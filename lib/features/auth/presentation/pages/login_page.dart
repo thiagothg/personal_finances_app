@@ -1,6 +1,7 @@
 // lib/src/features/auth/presentation/pages/login_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../domain/entities/auth_state.dart';
 import '../../providers.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,6 +18,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isSettingPin = false; // onboarding mode: set PIN
   final bool _useConfirm = true;
+  String? _errorMessage;
+  String? _successMessage;
 
   @override
   void initState() {
@@ -54,6 +57,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 12),
+                if (_errorMessage != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: SelectableText.rich(
+                      TextSpan(text: _errorMessage),
+                      style: TextStyle(color: Theme.of(context).colorScheme.error),
+                    ),
+                  ),
+                if (_successMessage != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: SelectableText.rich(
+                      TextSpan(text: _successMessage),
+                      style: const TextStyle(color: Colors.green),
+                    ),
+                  ),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -90,23 +109,27 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       const SizedBox(height: 12),
                       ElevatedButton(
                         onPressed: () async {
+                          setState(() {
+                            _errorMessage = null;
+                            _successMessage = null;
+                          });
                           if (!_formKey.currentState!.validate()) return;
                           final pin = _pinCtrl.text.trim();
                           if (_isSettingPin) {
                             await controller.setPin(pin);
                             if (!mounted) return;
                             // After setting PIN, we remain unauthenticated until user enters it or biometric auto-auth
-                            setState(() => _isSettingPin = false);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('PIN set. Please unlock.')),
-                            );
+                            setState(() {
+                              _isSettingPin = false;
+                              _successMessage = 'PIN set. Please unlock.';
+                            });
                           } else {
                             final ok = await controller.submitPin(pin);
                             if (!mounted) return;
                             if (!ok) {
-                              ScaffoldMessenger.of(
-                                context,
-                              ).showSnackBar(const SnackBar(content: Text('Wrong PIN')));
+                              setState(() {
+                                _errorMessage = 'Wrong PIN';
+                              });
                             } // on success the provider will redirect
                           }
                         },
@@ -121,12 +144,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     icon: const Icon(Icons.fingerprint),
                     label: const Text('Use Biometrics'),
                     onPressed: () async {
+                      setState(() {
+                        _errorMessage = null;
+                        _successMessage = null;
+                      });
                       final ok = await controller.authenticateBiometrics();
                       if (!mounted) return;
                       if (!ok) {
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(const SnackBar(content: Text('Biometric auth failed')));
+                        setState(() {
+                          _errorMessage = 'Biometric auth failed';
+                        });
                       }
                     },
                   ),
@@ -150,9 +177,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             TextButton(
                               onPressed: () async {
                                 await ref.read(authRepositoryProvider).removePin();
-                                if (!mounted) return;
-                                Navigator.of(context).pop();
-                                setState(() => _isSettingPin = true);
+                                if (!c.mounted) return;
+                                Navigator.of(c).pop();
+                                setState(() {
+                                  _isSettingPin = true;
+                                  _errorMessage = null;
+                                  _successMessage = null;
+                                });
                               },
                               child: const Text('Reset'),
                             ),

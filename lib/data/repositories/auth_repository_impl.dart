@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
+import '../../domain/repositories/auth_repository.dart';
 
-class AuthRepository {
+class AuthRepositoryImpl implements AuthRepository {
   // Key names
   static const _pinKey = 'user_pin_hash';
   static const _biometricEnabledKey = 'biometric_enabled';
@@ -12,9 +13,11 @@ class AuthRepository {
   final FlutterSecureStorage _secureStorage;
   final LocalAuthentication _localAuth;
 
-  AuthRepository({FlutterSecureStorage? secureStorage, LocalAuthentication? localAuth})
-    : _secureStorage = secureStorage ?? const FlutterSecureStorage(),
-      _localAuth = localAuth ?? LocalAuthentication();
+  AuthRepositoryImpl({
+    FlutterSecureStorage? secureStorage,
+    LocalAuthentication? localAuth,
+  }) : _secureStorage = secureStorage ?? const FlutterSecureStorage(),
+       _localAuth = localAuth ?? LocalAuthentication();
 
   // Hash a PIN using SHA-256
   String _hashPin(String pin) {
@@ -23,27 +26,32 @@ class AuthRepository {
     return digest.toString();
   }
 
+  @override
   Future<bool> hasPin() async {
     final v = await _secureStorage.read(key: _pinKey);
     return v != null;
   }
 
+  @override
   Future<void> setPin(String pin) async {
     final hashed = _hashPin(pin);
     await _secureStorage.write(key: _pinKey, value: hashed);
   }
 
+  @override
   Future<bool> verifyPin(String pin) async {
     final stored = await _secureStorage.read(key: _pinKey);
     if (stored == null) return false;
     return stored == _hashPin(pin);
   }
 
+  @override
   Future<void> removePin() async {
     await _secureStorage.delete(key: _pinKey);
   }
 
   // Biometrics
+  @override
   Future<bool> deviceSupportsBiometrics() async {
     try {
       return await _localAuth.isDeviceSupported();
@@ -52,6 +60,7 @@ class AuthRepository {
     }
   }
 
+  @override
   Future<bool> canCheckBiometrics() async {
     try {
       return await _localAuth.canCheckBiometrics;
@@ -61,10 +70,15 @@ class AuthRepository {
   }
 
   // <-- updated method here (compatible across versions) -->
-  Future<bool> authenticateWithBiometrics({String reason = 'Authenticate'}) async {
+  @override
+  Future<bool> authenticateWithBiometrics({
+    String reason = 'Authenticate',
+  }) async {
     try {
       // Use the older/common authenticate signature for broader compatibility.
-      final didAuthenticate = await _localAuth.authenticate(localizedReason: reason);
+      final didAuthenticate = await _localAuth.authenticate(
+        localizedReason: reason,
+      );
       return didAuthenticate;
     } catch (_) {
       // If anything fails, return false — authentication not available or failed.
@@ -72,10 +86,15 @@ class AuthRepository {
     }
   }
 
+  @override
   Future<void> enableBiometrics(bool enable) async {
-    await _secureStorage.write(key: _biometricEnabledKey, value: enable ? '1' : '0');
+    await _secureStorage.write(
+      key: _biometricEnabledKey,
+      value: enable ? '1' : '0',
+    );
   }
 
+  @override
   Future<bool> isBiometricsEnabled() async {
     final v = await _secureStorage.read(key: _biometricEnabledKey);
     return v == '1';

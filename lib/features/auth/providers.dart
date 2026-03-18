@@ -1,36 +1,26 @@
 // lib/src/features/auth/providers.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'data/auth_repository.dart';
+import '../../domain/entities/auth_state.dart';
+import '../../domain/repositories/auth_repository.dart';
+import '../../data/repositories/auth_repository_impl.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return AuthRepository();
+  return AuthRepositoryImpl();
 });
 
-/// Auth state: unauthenticated / authenticated / onboarding (no PIN set)
-enum AuthStatus { unknown, unauthenticated, authenticated, onboarding }
-
-class AuthState {
-  final AuthStatus status;
-  final bool biometricAvailable;
-  AuthState({required this.status, this.biometricAvailable = false});
-
-  AuthState copyWith({AuthStatus? status, bool? biometricAvailable}) {
-    return AuthState(
-      status: status ?? this.status,
-      biometricAvailable: biometricAvailable ?? this.biometricAvailable,
-    );
-  }
-}
-
-class AuthController extends StateNotifier<AuthState> {
-  final AuthRepository repo;
-  AuthController(this.repo) : super(AuthState(status: AuthStatus.unknown)) {
-    _init();
+class AuthController extends Notifier<AuthState> {
+  @override
+  AuthState build() {
+    _init(); // Fire & forget initialization
+    return AuthState(status: AuthStatus.unknown);
   }
 
   Future<void> _init() async {
+    final repo = ref.read(authRepositoryProvider);
     final hasPin = await repo.hasPin();
-    final bioAvail = await repo.deviceSupportsBiometrics() && await repo.canCheckBiometrics();
+    final bioAvail =
+        await repo.deviceSupportsBiometrics() &&
+        await repo.canCheckBiometrics();
     state = AuthState(
       status: hasPin ? AuthStatus.unauthenticated : AuthStatus.onboarding,
       biometricAvailable: bioAvail,
@@ -38,17 +28,20 @@ class AuthController extends StateNotifier<AuthState> {
   }
 
   Future<void> setPin(String pin) async {
+    final repo = ref.read(authRepositoryProvider);
     await repo.setPin(pin);
     state = state.copyWith(status: AuthStatus.unauthenticated);
   }
 
   Future<bool> submitPin(String pin) async {
+    final repo = ref.read(authRepositoryProvider);
     final ok = await repo.verifyPin(pin);
     state = ok ? state.copyWith(status: AuthStatus.authenticated) : state;
     return ok;
   }
 
   Future<bool> authenticateBiometrics() async {
+    final repo = ref.read(authRepositoryProvider);
     final ok = await repo.authenticateWithBiometrics();
     if (!ok) return false;
 
@@ -66,7 +59,4 @@ class AuthController extends StateNotifier<AuthState> {
   }
 }
 
-final authControllerProvider = StateNotifierProvider<AuthController, AuthState>((ref) {
-  final repo = ref.watch(authRepositoryProvider);
-  return AuthController(repo);
-});
+final authControllerProvider = NotifierProvider<AuthController, AuthState>(AuthController.new);
