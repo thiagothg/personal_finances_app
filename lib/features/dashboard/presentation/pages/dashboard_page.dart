@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../auth/providers.dart';
+import '../../../../shared/providers/auth_provider.dart';
 
 class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
@@ -11,7 +10,7 @@ class DashboardPage extends ConsumerWidget {
     final authState = ref.watch(authControllerProvider);
     final user = authState.user;
 
-    final dashboardContent = Center(
+    return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 800),
         child: SingleChildScrollView(
@@ -19,119 +18,98 @@ class DashboardPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// --- Balance Card (placeholder) ---
-            Card(
-              elevation: 0,
-              color: Theme.of(context).colorScheme.primaryContainer,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Current Balance',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(height: 8),
-                    Text('\$0.00', style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
-                  ],
+              if (user != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Text(
+                    'Hello, ${user.name}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            /// --- Recent Transactions Section ---
-            Text(
-              'Recent Transactions',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
-            ),
-
-            const SizedBox(height: 12),
-
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: ListTile(
-                leading: const CircleAvatar(child: Icon(Icons.shopping_cart)),
-                title: const Text('No transactions yet'),
-                subtitle: const Text('Add your first transaction'),
-                onTap: () => context.go('/add'),
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            /// --- Goals Overview Section ---
-            Text(
-              'Goals Overview',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
-            ),
-
-            const SizedBox(height: 12),
-
               Card(
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                child: ListTile(
-                  leading: const CircleAvatar(child: Icon(Icons.flag)),
-                  title: const Text('No goals yet'),
-                  subtitle: const Text('Create your first goal'),
-                  onTap: () => context.go('/goals'),
+                color: Theme.of(context)
+                    .colorScheme
+                    .primaryContainer,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Current Balance',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '\$0.00',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Recent Transactions',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 12),
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const ListTile(
+                  leading:
+                      CircleAvatar(child: Icon(Icons.shopping_cart)),
+                  title: Text('No transactions yet'),
+                  subtitle: Text('Add your first transaction'),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Goals Overview',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 12),
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const ListTile(
+                  leading: CircleAvatar(child: Icon(Icons.flag)),
+                  title: Text('No goals yet'),
+                  subtitle: Text('Create your first goal'),
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(user != null ? 'Hello, ${user.name}' : 'Dashboard', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // later: context.go('/settings');
-            },
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/add'),
-        child: const Icon(Icons.add),
-      ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth < 800) {
-            return dashboardContent;
-          }
-          return Row(
-            children: [
-              Container(
-                width: 250,
-                color: Theme.of(context).primaryColor,
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.dashboard, size: 80, color: Colors.white),
-                    SizedBox(height: 16),
-                    Text(
-                      'Personal Finances',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: dashboardContent,
-              ),
-            ],
-          );
-        },
       ),
     );
   }

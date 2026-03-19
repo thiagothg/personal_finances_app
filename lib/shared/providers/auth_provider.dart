@@ -6,7 +6,7 @@ import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/biometric_auth_usecase.dart';
 import '../../data/repositories/auth_repository_impl.dart';
-import 'providers/datasource_providers.dart';
+import 'auth/datasource_providers.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(
@@ -30,7 +30,7 @@ final biometricAuthUseCaseProvider = Provider<BiometricAuthUseCase>((ref) {
 class AuthController extends Notifier<AuthState> {
   @override
   AuthState build() {
-    _init(); // Fire & forget initialization
+    _init();
     return AuthState(status: AuthStatus.unknown);
   }
 
@@ -54,11 +54,7 @@ class AuthController extends Notifier<AuthState> {
       user = await repo.retrieveStoredUser();
     }
 
-    state = AuthState(
-      status: status, 
-      biometricAvailable: bioAvail,
-      user: user,
-    );
+    state = AuthState(status: status, biometricAvailable: bioAvail, user: user);
   }
 
   void setAuthenticated(User user) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../providers/login_provider.dart';
-import '../../providers/biometric_auth_provider.dart';
+import '../../../../shared/providers/auth/login_provider.dart';
+import '../../../../shared/providers/auth/biometric_auth_provider.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -48,7 +48,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         .login(_emailController.text, _passwordController.text);
 
     if (success && mounted) {
-      context.go('/'); // Navigate to dashboard
+      context.go('/dashboard');
     }
   }
 
@@ -56,7 +56,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final success = await ref.read(biometricAuthControllerProvider.notifier).authenticate();
 
     if (success && mounted) {
-      context.go('/'); // Navigate to dashboard
+      context.go('/dashboard');
     }
   }
 

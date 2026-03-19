@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../domain/entities/auth_state.dart';
-import '../../auth/providers.dart';
+import '../../../shared/providers/auth_provider.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -26,7 +26,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
   void _navigateBasedOnStatus(AuthStatus status) {
     if (status == AuthStatus.authenticated) {
-      context.go('/dashboard');
+      context.go('/dashboard'); // shell route
     } else if (status == AuthStatus.unauthenticated || status == AuthStatus.onboarding) {
       context.go('/login');
     }
