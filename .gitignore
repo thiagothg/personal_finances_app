@@ -50,3 +50,9 @@ app.*.map.json
 /.vscode/android-app-release
 /.vscode
 
+# Ignore generated files
+*.g.dart
+*.freezed.dart
+*.chopper.dart
+
+.env
