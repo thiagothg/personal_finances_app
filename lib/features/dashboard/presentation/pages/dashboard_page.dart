@@ -11,30 +11,15 @@ class DashboardPage extends ConsumerWidget {
     final authState = ref.watch(authControllerProvider);
     final user = authState.user;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(user != null ? 'Hello, ${user.name}' : 'Dashboard', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // later: context.go('/settings');
-            },
-          ),
-        ],
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/add'),
-        child: const Icon(Icons.add),
-      ),
-
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// --- Balance Card (placeholder) ---
+    final dashboardContent = Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 800),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// --- Balance Card (placeholder) ---
             Card(
               elevation: 0,
               color: Theme.of(context).colorScheme.primaryContainer,
@@ -86,18 +71,67 @@ class DashboardPage extends ConsumerWidget {
 
             const SizedBox(height: 12),
 
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: ListTile(
-                leading: const CircleAvatar(child: Icon(Icons.flag)),
-                title: const Text('No goals yet'),
-                subtitle: const Text('Create your first goal'),
-                onTap: () => context.go('/goals'),
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                child: ListTile(
+                  leading: const CircleAvatar(child: Icon(Icons.flag)),
+                  title: const Text('No goals yet'),
+                  subtitle: const Text('Create your first goal'),
+                  onTap: () => context.go('/goals'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(user != null ? 'Hello, ${user.name}' : 'Dashboard', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              // later: context.go('/settings');
+            },
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.go('/add'),
+        child: const Icon(Icons.add),
+      ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 800) {
+            return dashboardContent;
+          }
+          return Row(
+            children: [
+              Container(
+                width: 250,
+                color: Theme.of(context).primaryColor,
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.dashboard, size: 80, color: Colors.white),
+                    SizedBox(height: 16),
+                    Text(
+                      'Personal Finances',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: dashboardContent,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

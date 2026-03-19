@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../domain/entities/auth_state.dart';
-import '../../providers.dart';
+import '../../../domain/entities/auth_state.dart';
+import '../../auth/providers.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -15,7 +15,6 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // Fallback timer for navigation
     Future.delayed(const Duration(seconds: 2), _checkAuth);
   }
 
@@ -47,23 +46,19 @@ class _SplashPageState extends ConsumerState<SplashPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.account_balance_wallet_rounded,
-              size: 80,
-              color: Colors.white,
-            ),
+            Icon(Icons.account_balance_wallet_rounded, size: 80, color: Colors.white),
             const SizedBox(height: 24),
             Text(
               'Personal Finances',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 48),
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              backgroundColor: Colors.black.withValues(alpha: 0.08), // Using modern API instead of deprecated withOpacity
+              backgroundColor: Colors.black.withValues(alpha: 0.08),
             ),
           ],
         ),
