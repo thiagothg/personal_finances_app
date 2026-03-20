@@ -5,8 +5,6 @@ class AccountsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Accounts'),
-    );
+    return const Center(child: Text('Accounts'));
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../auth_provider.dart';
+
+import 'auth_provider.dart';
 
 part 'biometric_auth_provider.g.dart';
 

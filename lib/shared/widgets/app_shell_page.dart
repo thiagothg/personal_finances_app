@@ -9,10 +9,7 @@ import 'new_transaction_fab.dart';
 class AppShellPage extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
 
-  const AppShellPage({
-    super.key,
-    required this.navigationShell,
-  });
+  const AppShellPage({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,10 +60,9 @@ class _MobileShell extends StatelessWidget {
         ),
         title: Text(
           'Personal Finances',
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium
-              ?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       drawer: MobileDrawer(navigationShell: navigationShell),

@@ -5,8 +5,6 @@ class TrendsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Trends'),
-    );
+    return const Center(child: Text('Trends'));
   }
 }

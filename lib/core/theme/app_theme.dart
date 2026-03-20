@@ -195,7 +195,14 @@ ThemeData _buildTheme(Brightness brightness) {
       selectedTileColor: colorScheme.primaryContainer.withValues(alpha: 0.32),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
-    iconTheme: IconThemeData(color: colorScheme.onSurfaceVariant),
+    iconTheme: IconThemeData(
+      color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+    ),
+    iconButtonTheme: IconButtonThemeData(
+      style: IconButton.styleFrom(
+        foregroundColor: colorScheme.onSurfaceVariant,
+      ),
+    ),
   );
 }
 

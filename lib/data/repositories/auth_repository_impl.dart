@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:personal_finances_app/data/datasource/auth_remote_datasource.dart';
+import 'package:personal_finances_app/data/datasource/auth/auth_remote_datasource.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 
@@ -53,12 +53,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> storeUser(User user) async {
-    final userMap = {
-      'id': user.id,
-      'name': user.name,
-      'email': user.email,
-      'token': user.token,
-    };
+    final userMap = {'id': user.id, 'name': user.name, 'email': user.email, 'token': user.token};
     await _secureStorage.write(key: _userKey, value: jsonEncode(userMap));
   }
 

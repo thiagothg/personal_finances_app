@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../providers/auth_provider.dart';
+import '../providers/auth/auth_provider.dart';
 import '../providers/theme_provider.dart';
 import '../providers/locale_provider.dart';
 
@@ -79,9 +79,7 @@ class _ProfileSheet extends ConsumerWidget {
               },
               icon: const Icon(Icons.logout),
               label: const Text('Logout'),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.error,
-              ),
+              style: OutlinedButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
             ),
           ),
           const SizedBox(height: 16),

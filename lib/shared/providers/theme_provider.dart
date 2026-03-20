@@ -9,8 +9,6 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
   ThemeMode build() => ThemeMode.dark;
 
   void toggle() {
-    state = state == ThemeMode.dark
-        ? ThemeMode.light
-        : ThemeMode.dark;
+    state = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
   }
 }

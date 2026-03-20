@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../shared/providers/auth_provider.dart';
+
+import '../../../../shared/providers/auth/auth_provider.dart';
 
 class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
@@ -23,17 +24,12 @@ class DashboardPage extends ConsumerWidget {
               if (user != null)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16),
-                  child: Text(
-                    'Hello, ${user.name}',
-                    style: textTheme.headlineMedium,
-                  ),
+                  child: Text('Hello, ${user.name}', style: textTheme.headlineMedium),
                 ),
               Card(
                 elevation: 0,
                 color: colorScheme.primaryContainer,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
@@ -61,9 +57,7 @@ class DashboardPage extends ConsumerWidget {
               const SizedBox(height: 12),
               Card(
                 elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 child: const ListTile(
                   leading: CircleAvatar(child: Icon(Icons.shopping_cart)),
                   title: Text('No transactions yet'),
@@ -75,9 +69,7 @@ class DashboardPage extends ConsumerWidget {
               const SizedBox(height: 12),
               Card(
                 elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 child: const ListTile(
                   leading: CircleAvatar(child: Icon(Icons.flag)),
                   title: Text('No goals yet'),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../domain/entities/auth_state.dart';
-import '../../../shared/providers/auth_provider.dart';
+import '../../../domain/entities/auth/auth_state.dart';
+import '../../../shared/providers/auth/auth_provider.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -27,8 +27,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   void _navigateBasedOnStatus(AuthStatus status) {
     if (status == AuthStatus.authenticated) {
       context.go('/dashboard'); // shell route
-    } else if (status == AuthStatus.unauthenticated ||
-        status == AuthStatus.onboarding) {
+    } else if (status == AuthStatus.unauthenticated || status == AuthStatus.onboarding) {
       context.go('/login');
     }
   }
@@ -50,17 +49,11 @@ class _SplashPageState extends ConsumerState<SplashPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.account_balance_wallet_rounded,
-              size: 80,
-              color: colorScheme.onPrimary,
-            ),
+            Icon(Icons.account_balance_wallet_rounded, size: 80, color: colorScheme.onPrimary),
             const SizedBox(height: 24),
             Text(
               'Personal Finances',
-              style: textTheme.displayMedium?.copyWith(
-                color: colorScheme.onPrimary,
-              ),
+              style: textTheme.displayMedium?.copyWith(color: colorScheme.onPrimary),
             ),
             const SizedBox(height: 48),
             CircularProgressIndicator(

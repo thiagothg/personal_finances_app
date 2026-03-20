@@ -69,6 +69,7 @@ const List<MenuSection> menuSections = [
         icon: Icons.category_outlined,
         activeIcon: Icons.category,
         route: '/categories',
+        branchIndex: 6,
       ),
       MenuItemData(
         label: 'Accounts',

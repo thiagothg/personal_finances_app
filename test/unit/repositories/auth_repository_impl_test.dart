@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:personal_finances_app/data/datasource/auth_remote_datasource.dart';
+import 'package:personal_finances_app/data/datasource/auth/auth_remote_datasource.dart';
 import 'package:personal_finances_app/data/models/user_model.dart';
 import 'package:personal_finances_app/data/repositories/auth_repository_impl.dart';
 import 'package:personal_finances_app/domain/entities/user.dart';

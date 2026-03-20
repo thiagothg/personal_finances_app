@@ -20,8 +20,8 @@ import '../../features/cash_flow/presentation/pages/cash_flow_page.dart';
 import '../../features/spending/presentation/pages/spending_page.dart';
 import '../../features/trends/presentation/pages/trends_page.dart';
 
-import '../../domain/entities/auth_state.dart';
-import '../../shared/providers/auth_provider.dart';
+import '../../domain/entities/auth/auth_state.dart';
+import '../../shared/providers/auth/auth_provider.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authControllerProvider);
@@ -76,9 +76,18 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(path: '/people', name: 'people', builder: (c, s) => const PeoplePage()),
             ],
           ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/categories',
+                name: 'categories',
+                builder: (c, s) => const CategoriesPage(),
+              ),
+            ],
+          ),
         ],
       ),
-      GoRoute(path: '/categories', name: 'categories', builder: (c, s) => const CategoriesPage()),
+
       GoRoute(path: '/accounts', name: 'accounts', builder: (c, s) => const AccountsPage()),
       GoRoute(path: '/recurring', name: 'recurring', builder: (c, s) => const RecurringPage()),
       GoRoute(path: '/budget', name: 'budget', builder: (c, s) => const BudgetPage()),

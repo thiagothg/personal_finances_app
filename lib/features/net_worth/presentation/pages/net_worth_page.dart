@@ -5,8 +5,6 @@ class NetWorthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Net Worth'),
-    );
+    return const Center(child: Text('Net Worth'));
   }
 }

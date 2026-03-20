@@ -5,8 +5,6 @@ class RecurringPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Recurring'),
-    );
+    return const Center(child: Text('Recurring'));
   }
 }

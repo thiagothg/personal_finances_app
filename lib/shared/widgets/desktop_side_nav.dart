@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../providers/auth_provider.dart';
+import '../providers/auth/auth_provider.dart';
 import '../providers/side_nav_provider.dart';
 import '../providers/theme_provider.dart';
 import '../providers/locale_provider.dart';
@@ -48,10 +48,8 @@ class DesktopSideNav extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               children: [
                 for (final section in menuSections) ...[
-                  if (section.title != null && expanded)
-                    _SectionHeader(title: section.title!),
-                  if (section.title != null && !expanded)
-                    const Divider(height: 24),
+                  if (section.title != null && expanded) _SectionHeader(title: section.title!),
+                  if (section.title != null && !expanded) const Divider(height: 24),
                   for (final item in section.items)
                     _NavItem(
                       item: item,
@@ -107,19 +105,12 @@ class DesktopSideNav extends ConsumerWidget {
                         onPressed: () {
                           ref.read(themeModeProvider.notifier).toggle();
                         },
-                        icon: Icon(
-                          isDark ? Icons.light_mode : Icons.dark_mode,
-                          size: 20,
-                        ),
+                        icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode, size: 20),
                       ),
                     ],
                   ),
           ),
-          _ProfileTile(
-            expanded: expanded,
-            user: user,
-            onTap: () => showProfileModal(context),
-          ),
+          _ProfileTile(expanded: expanded, user: user, onTap: () => showProfileModal(context)),
           const SizedBox(height: 8),
         ],
       ),
@@ -154,10 +145,7 @@ class _LogoRow extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: Row(
         children: [
-          IconButton(
-            onPressed: onToggle,
-            icon: Icon(expanded ? Icons.menu_open : Icons.menu),
-          ),
+          IconButton(onPressed: onToggle, icon: Icon(expanded ? Icons.menu_open : Icons.menu)),
           if (expanded) ...[
             const SizedBox(width: 8),
             const Icon(Icons.account_balance_wallet),
@@ -190,9 +178,7 @@ class _NewTransactionButton extends StatelessWidget {
           onPressed: () => showNewTransactionModal(context),
           icon: const Icon(Icons.add),
           label: const Text('New Transaction'),
-          style: FilledButton.styleFrom(
-            minimumSize: const Size(double.infinity, 44),
-          ),
+          style: FilledButton.styleFrom(minimumSize: const Size(double.infinity, 44)),
         ),
       );
     }
@@ -250,9 +236,7 @@ class _NavItem extends StatelessWidget {
           onPressed: onTap,
           icon: Icon(
             isActive ? item.activeIcon : item.icon,
-            color: isActive
-                ? colorScheme.primary
-                : colorScheme.onSurfaceVariant,
+            color: isActive ? colorScheme.primary : colorScheme.onSurfaceVariant,
           ),
           tooltip: item.label,
         ),
@@ -288,17 +272,11 @@ class _ProfileTile extends StatelessWidget {
   final dynamic user;
   final VoidCallback onTap;
 
-  const _ProfileTile({
-    required this.expanded,
-    required this.user,
-    required this.onTap,
-  });
+  const _ProfileTile({required this.expanded, required this.user, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    final initial = user?.name?.isNotEmpty == true
-        ? user.name[0].toUpperCase()
-        : '?';
+    final initial = user?.name?.isNotEmpty == true ? user.name[0].toUpperCase() : '?';
 
     if (!expanded) {
       return Padding(

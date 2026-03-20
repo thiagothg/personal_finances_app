@@ -1,12 +1,12 @@
 // lib/src/features/auth/providers.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/entities/auth_state.dart';
-import '../../domain/entities/user.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../../domain/usecases/login_usecase.dart';
-import '../../domain/usecases/biometric_auth_usecase.dart';
-import '../../data/repositories/auth_repository_impl.dart';
-import 'auth/datasource_providers.dart';
+import '../../../domain/entities/auth/auth_state.dart';
+import '../../../domain/entities/user.dart';
+import '../../../domain/repositories/auth_repository.dart';
+import '../../../domain/usecases/auth/login_usecase.dart';
+import '../../../domain/usecases/auth/biometric_auth_usecase.dart';
+import '../../../data/repositories/auth_repository_impl.dart';
+import 'datasource_providers.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(

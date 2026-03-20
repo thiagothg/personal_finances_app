@@ -5,8 +5,6 @@ class PeoplePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('People'),
-    );
+    return const Center(child: Text('People'));
   }
 }

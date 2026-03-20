@@ -15,10 +15,12 @@ abstract class UserModel with _$UserModel {
     @JsonKey(name: 'email_verified_at') DateTime? emailVerifiedAt,
     @JsonKey(name: 'created_at') DateTime? createdAt,
     @JsonKey(name: 'updated_at') DateTime? updatedAt,
-    @JsonKey(name: 'access_token') required String accessToken, // Campo retornado pela API Laravel
+    @JsonKey(name: 'access_token')
+    required String accessToken, // Campo retornado pela API Laravel
   }) = _UserModel;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 
   // Mapper: Data -> Domain
   User toDomain() => User(id: id, name: name, email: email, token: accessToken);

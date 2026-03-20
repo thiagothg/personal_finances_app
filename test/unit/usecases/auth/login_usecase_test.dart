@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:personal_finances_app/domain/entities/user.dart';
 import 'package:personal_finances_app/domain/repositories/auth_repository.dart';
-import 'package:personal_finances_app/domain/usecases/login_usecase.dart';
+import 'package:personal_finances_app/domain/usecases/auth/login_usecase.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 

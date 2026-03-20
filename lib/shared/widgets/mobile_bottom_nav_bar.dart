@@ -4,10 +4,7 @@ import 'package:go_router/go_router.dart';
 class MobileBottomNavBar extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
-  const MobileBottomNavBar({
-    super.key,
-    required this.navigationShell,
-  });
+  const MobileBottomNavBar({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context) {

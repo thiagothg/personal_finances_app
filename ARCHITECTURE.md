@@ -128,7 +128,8 @@ Foundational app configurations and bootstrapping boilerplate.
 ## 7. UI and Styling
 
 - Use Flutter's built-in widgets and create custom widgets.
-- Implement responsive design using `LayoutBuilder` or `MediaQuery`.
+- **Always** use `LayoutBuilder` / `ConstrainedBox` approach for top-level pages to ensure they are responsive for wide screens (desktop/web/tablet). Use `constraints.maxWidth < 800` to show the standard mobile layout, and a `Row` split-screen layout for wide screens.
+
 - Use themes for consistent styling across the app.
 - Use `Theme.of(context).textTheme.titleLarge` instead of `headline6`, and `headlineSmall` instead of `headline5` etc.
 - Do not hardcode colors, padding, or text styles directly in widgets.
