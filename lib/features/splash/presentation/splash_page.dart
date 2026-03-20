@@ -27,13 +27,16 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   void _navigateBasedOnStatus(AuthStatus status) {
     if (status == AuthStatus.authenticated) {
       context.go('/dashboard'); // shell route
-    } else if (status == AuthStatus.unauthenticated || status == AuthStatus.onboarding) {
+    } else if (status == AuthStatus.unauthenticated ||
+        status == AuthStatus.onboarding) {
       context.go('/login');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     ref.listen<AuthState>(authControllerProvider, (previous, next) {
       if (previous?.status != next.status) {
         _navigateBasedOnStatus(next.status);
@@ -41,24 +44,28 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     });
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: colorScheme.primary,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.account_balance_wallet_rounded, size: 80, color: Colors.white),
+            Icon(
+              Icons.account_balance_wallet_rounded,
+              size: 80,
+              color: colorScheme.onPrimary,
+            ),
             const SizedBox(height: 24),
             Text(
               'Personal Finances',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: Colors.white,
+                color: colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 48),
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              backgroundColor: Colors.black.withValues(alpha: 0.08),
+              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.onPrimary),
+              backgroundColor: colorScheme.onPrimary.withValues(alpha: 0.12),
             ),
           ],
         ),

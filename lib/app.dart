@@ -19,7 +19,7 @@ class MyApp extends ConsumerWidget {
       routerConfig: router,
       title: 'Finance App',
       theme: lightTheme,
-      darkTheme: appTheme,
+      darkTheme: darkTheme,
       themeMode: themeMode,
       locale: locale,
     );

@@ -53,7 +53,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   Future<void> _submitBiometricLogin() async {
-    final success = await ref.read(biometricAuthControllerProvider.notifier).authenticate();
+    final success = await ref
+        .read(biometricAuthControllerProvider.notifier)
+        .authenticate();
 
     if (success && mounted) {
       context.go('/dashboard');
@@ -62,6 +64,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     ref.listen(loginControllerProvider, (previous, next) {
       if (next.hasError && !next.isLoading) {
         final errorMsg = next.error
@@ -71,7 +75,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMsg),
-            backgroundColor: Colors.red,
+            backgroundColor: colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -117,7 +121,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   hintText: 'your@email.com',
                   errorText: !_isEmailValid ? 'Invalid email format' : null,
                   prefixIcon: const Icon(Icons.email),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
@@ -137,14 +143,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   errorText: !_isPasswordValid ? 'Min. 6 characters' : null,
                   prefixIcon: const Icon(Icons.lock),
                   suffixIcon: IconButton(
-                    icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                    icon: Icon(
+                      _showPassword ? Icons.visibility : Icons.visibility_off,
+                    ),
                     onPressed: () {
                       setState(() {
                         _showPassword = !_showPassword;
                       });
                     },
                   ),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 obscureText: !_showPassword,
                 textInputAction: TextInputAction.done,
@@ -163,7 +173,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 child: TextButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Forgot password feature coming soon')),
+                      const SnackBar(
+                        content: Text('Forgot password feature coming soon'),
+                      ),
                     );
                   },
                   child: const Text('Forgot Password?'),
@@ -179,7 +191,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     TextSpan(
                       text:
                           'Login failed: ${loginState.error.toString().replaceFirst('Exception: ', '').replaceAll('ArgumentError: ', '')}',
-                      style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: colorScheme.error,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -187,7 +202,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               // Login Button
               ElevatedButton(
                 onPressed: loginState.isLoading ? null : _submitLogin,
-                style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 12)),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
                 child: loginState.isLoading
                     ? const SizedBox(
                         height: 20,
@@ -202,12 +219,25 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               if (isBiometricAvailable)
                 Row(
                   children: [
-                    Expanded(child: Container(height: 1, color: Colors.grey[300])),
+                    Expanded(
+                      child: Container(
+                        height: 1,
+                        color: colorScheme.outlineVariant,
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text('OR', style: Theme.of(context).textTheme.bodySmall),
+                      child: Text(
+                        'OR',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ),
-                    Expanded(child: Container(height: 1, color: Colors.grey[300])),
+                    Expanded(
+                      child: Container(
+                        height: 1,
+                        color: colorScheme.outlineVariant,
+                      ),
+                    ),
                   ],
                 ),
               const SizedBox(height: 24),
@@ -215,7 +245,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               // Biometric Button (if available)
               if (isBiometricAvailable)
                 OutlinedButton.icon(
-                  onPressed: biometricState.isLoading ? null : _submitBiometricLogin,
+                  onPressed: biometricState.isLoading
+                      ? null
+                      : _submitBiometricLogin,
                   icon: const Icon(Icons.fingerprint),
                   label: const Text('Use Biometric'),
                   style: OutlinedButton.styleFrom(
@@ -239,9 +271,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               Expanded(
                 flex: 1,
                 child: Container(
-                  color: Theme.of(context).primaryColor,
-                  child: const Center(
-                    child: Icon(Icons.account_balance_wallet, size: 100, color: Colors.white),
+                  color: colorScheme.primary,
+                  child: Center(
+                    child: Icon(
+                      Icons.account_balance_wallet,
+                      size: 100,
+                      color: colorScheme.onPrimary,
+                    ),
                   ),
                 ),
               ),

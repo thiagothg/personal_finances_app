@@ -12,10 +12,7 @@ import 'profile_modal.dart';
 class DesktopSideNav extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
 
-  const DesktopSideNav({
-    super.key,
-    required this.navigationShell,
-  });
+  const DesktopSideNav({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,8 +23,7 @@ class DesktopSideNav extends ConsumerWidget {
     final user = authState.user;
     final isDark = themeMode == ThemeMode.dark;
     final isEn = locale.languageCode == 'en';
-    final currentLocation =
-        GoRouterState.of(context).matchedLocation;
+    final currentLocation = GoRouterState.of(context).matchedLocation;
     final width = expanded ? 280.0 : 72.0;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -36,18 +32,13 @@ class DesktopSideNav extends ConsumerWidget {
       width: width,
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        border: Border(
-          right: BorderSide(
-            color: colorScheme.outlineVariant,
-          ),
-        ),
+        border: Border(right: BorderSide(color: colorScheme.outlineVariant)),
       ),
       child: Column(
         children: [
           _LogoRow(
             expanded: expanded,
-            onToggle: () =>
-                ref.read(sideNavExpandedProvider.notifier).toggle(),
+            onToggle: () => ref.read(sideNavExpandedProvider.notifier).toggle(),
           ),
           const SizedBox(height: 8),
           _NewTransactionButton(expanded: expanded),
@@ -65,14 +56,8 @@ class DesktopSideNav extends ConsumerWidget {
                     _NavItem(
                       item: item,
                       expanded: expanded,
-                      isActive: _isActive(
-                        item,
-                        currentLocation,
-                      ),
-                      onTap: () => _onItemTap(
-                        context,
-                        item,
-                      ),
+                      isActive: _isActive(item, currentLocation),
+                      onTap: () => _onItemTap(context, item),
                     ),
                 ],
               ],
@@ -80,57 +65,30 @@ class DesktopSideNav extends ConsumerWidget {
           ),
           const Divider(height: 1),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 8,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: expanded
                 ? Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SegmentedButton<bool>(
                         segments: const [
-                          ButtonSegment(
-                            value: true,
-                            label: Text('EN'),
-                          ),
-                          ButtonSegment(
-                            value: false,
-                            label: Text('PT'),
-                          ),
+                          ButtonSegment(value: true, label: Text('EN')),
+                          ButtonSegment(value: false, label: Text('PT')),
                         ],
                         selected: {isEn},
                         onSelectionChanged: (_) {
-                          ref
-                              .read(
-                                localeProvider
-                                    .notifier,
-                              )
-                              .toggle();
+                          ref.read(localeProvider.notifier).toggle();
                         },
                         style: ButtonStyle(
-                          visualDensity:
-                              VisualDensity.compact,
-                          tapTargetSize:
-                              MaterialTapTargetSize
-                                  .shrinkWrap,
+                          visualDensity: VisualDensity.compact,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                       ),
                       IconButton(
                         onPressed: () {
-                          ref
-                              .read(
-                                themeModeProvider
-                                    .notifier,
-                              )
-                              .toggle();
+                          ref.read(themeModeProvider.notifier).toggle();
                         },
-                        icon: Icon(
-                          isDark
-                              ? Icons.light_mode
-                              : Icons.dark_mode,
-                        ),
+                        icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
                       ),
                     ],
                   )
@@ -138,37 +96,20 @@ class DesktopSideNav extends ConsumerWidget {
                     children: [
                       IconButton(
                         onPressed: () {
-                          ref
-                              .read(
-                                localeProvider
-                                    .notifier,
-                              )
-                              .toggle();
+                          ref.read(localeProvider.notifier).toggle();
                         },
                         icon: Text(
                           isEn ? 'EN' : 'PT',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall
-                              ?.copyWith(
-                                fontWeight:
-                                    FontWeight.bold,
-                              ),
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ),
                       IconButton(
                         onPressed: () {
-                          ref
-                              .read(
-                                themeModeProvider
-                                    .notifier,
-                              )
-                              .toggle();
+                          ref.read(themeModeProvider.notifier).toggle();
                         },
                         icon: Icon(
-                          isDark
-                              ? Icons.light_mode
-                              : Icons.dark_mode,
+                          isDark ? Icons.light_mode : Icons.dark_mode,
                           size: 20,
                         ),
                       ),
@@ -194,8 +135,7 @@ class DesktopSideNav extends ConsumerWidget {
     if (item.branchIndex != null) {
       navigationShell.goBranch(
         item.branchIndex!,
-        initialLocation:
-            item.branchIndex == navigationShell.currentIndex,
+        initialLocation: item.branchIndex == navigationShell.currentIndex,
       );
     } else {
       context.go(item.route);
@@ -207,10 +147,7 @@ class _LogoRow extends StatelessWidget {
   final bool expanded;
   final VoidCallback onToggle;
 
-  const _LogoRow({
-    required this.expanded,
-    required this.onToggle,
-  });
+  const _LogoRow({required this.expanded, required this.onToggle});
 
   @override
   Widget build(BuildContext context) {
@@ -220,9 +157,7 @@ class _LogoRow extends StatelessWidget {
         children: [
           IconButton(
             onPressed: onToggle,
-            icon: Icon(
-              expanded ? Icons.menu_open : Icons.menu,
-            ),
+            icon: Icon(expanded ? Icons.menu_open : Icons.menu),
           ),
           if (expanded) ...[
             const SizedBox(width: 8),
@@ -231,10 +166,9 @@ class _LogoRow extends StatelessWidget {
             Expanded(
               child: Text(
                 'Personal Finances',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -269,7 +203,7 @@ class _NewTransactionButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: IconButton.filled(
         onPressed: () => showNewTransactionModal(context),
-        icon: const Icon(Icons.add),
+        icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onPrimary),
       ),
     );
   }
@@ -283,19 +217,13 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 12,
-        top: 16,
-        bottom: 4,
-      ),
+      padding: const EdgeInsets.only(left: 12, top: 16, bottom: 4),
       child: Text(
         title,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurfaceVariant,
-              letterSpacing: 1.2,
-            ),
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+          letterSpacing: 1.2,
+        ),
       ),
     );
   }
@@ -338,27 +266,19 @@ class _NavItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: ListTile(
         dense: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         selected: isActive,
-        selectedTileColor:
-            colorScheme.primaryContainer.withValues(alpha: 0.3),
+        selectedTileColor: colorScheme.primaryContainer.withValues(alpha: 0.3),
         leading: Icon(
           isActive ? item.activeIcon : item.icon,
-          color: isActive
-              ? colorScheme.primary
-              : colorScheme.onSurfaceVariant,
+          color: isActive ? colorScheme.primary : colorScheme.onSurfaceVariant,
           size: 22,
         ),
         title: Text(
           item.label,
           style: TextStyle(
-            color: isActive
-                ? colorScheme.primary
-                : colorScheme.onSurface,
-            fontWeight:
-                isActive ? FontWeight.w600 : FontWeight.normal,
+            color: isActive ? colorScheme.primary : colorScheme.onSurface,
+            fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
           ),
         ),
         onTap: onTap,
@@ -402,9 +322,7 @@ class _ProfileTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: ListTile(
         dense: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         leading: CircleAvatar(
           radius: 16,
           child: Text(initial, style: const TextStyle(fontSize: 14)),
