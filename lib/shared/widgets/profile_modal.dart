@@ -26,6 +26,7 @@ class _ProfileSheet extends ConsumerWidget {
     final locale = ref.watch(localeProvider);
     final isDark = themeMode == ThemeMode.dark;
     final isEn = locale.languageCode == 'en';
+    final textTheme = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -35,23 +36,15 @@ class _ProfileSheet extends ConsumerWidget {
           CircleAvatar(
             radius: 36,
             child: Text(
-              user?.name.isNotEmpty == true
-                  ? user!.name[0].toUpperCase()
-                  : '?',
-              style: const TextStyle(fontSize: 28),
+              user?.name.isNotEmpty == true ? user!.name[0].toUpperCase() : '?',
+              style: textTheme.displayMedium,
             ),
           ),
           const SizedBox(height: 12),
           if (user != null) ...[
-            Text(
-              user.name,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            Text(user.name, style: textTheme.titleMedium),
             const SizedBox(height: 4),
-            Text(
-              user.email,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+            Text(user.email, style: textTheme.bodySmall),
           ],
           const SizedBox(height: 24),
           Row(
@@ -64,20 +57,14 @@ class _ProfileSheet extends ConsumerWidget {
                 ],
                 selected: {isEn},
                 onSelectionChanged: (_) {
-                  ref
-                      .read(localeProvider.notifier)
-                      .toggle();
+                  ref.read(localeProvider.notifier).toggle();
                 },
               ),
               IconButton(
                 onPressed: () {
-                  ref
-                      .read(themeModeProvider.notifier)
-                      .toggle();
+                  ref.read(themeModeProvider.notifier).toggle();
                 },
-                icon: Icon(
-                  isDark ? Icons.light_mode : Icons.dark_mode,
-                ),
+                icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
               ),
             ],
           ),
@@ -87,16 +74,13 @@ class _ProfileSheet extends ConsumerWidget {
             child: OutlinedButton.icon(
               onPressed: () {
                 Navigator.of(context).pop();
-                ref
-                    .read(authControllerProvider.notifier)
-                    .signOut();
+                ref.read(authControllerProvider.notifier).signOut();
                 context.go('/login');
               },
               icon: const Icon(Icons.logout),
               label: const Text('Logout'),
               style: OutlinedButton.styleFrom(
-                foregroundColor:
-                    Theme.of(context).colorScheme.error,
+                foregroundColor: Theme.of(context).colorScheme.error,
               ),
             ),
           ),

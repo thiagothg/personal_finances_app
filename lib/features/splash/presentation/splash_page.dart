@@ -36,6 +36,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     ref.listen<AuthState>(authControllerProvider, (previous, next) {
       if (previous?.status != next.status) {
@@ -57,9 +58,8 @@ class _SplashPageState extends ConsumerState<SplashPage> {
             const SizedBox(height: 24),
             Text(
               'Personal Finances',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              style: textTheme.displayMedium?.copyWith(
                 color: colorScheme.onPrimary,
-                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 48),

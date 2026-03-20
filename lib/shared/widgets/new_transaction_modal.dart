@@ -26,10 +26,16 @@ class _NewTransactionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('New Transaction'),
-      content: const SizedBox(
+      title: Text(
+        'New Transaction',
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
+      content: SizedBox(
         width: 400,
-        child: Text('Coming soon'),
+        child: Text(
+          'Coming soon',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
       ),
       actions: [
         TextButton(
@@ -70,7 +76,7 @@ class _NewTransactionSheet extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            const Text('Coming soon'),
+            Text('Coming soon', style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 24),
           ],
         ),

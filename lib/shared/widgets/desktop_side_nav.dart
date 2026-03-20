@@ -100,8 +100,7 @@ class DesktopSideNav extends ConsumerWidget {
                         },
                         icon: Text(
                           isEn ? 'EN' : 'PT',
-                          style: Theme.of(context).textTheme.labelSmall
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ),
                       IconButton(
@@ -166,9 +165,7 @@ class _LogoRow extends StatelessWidget {
             Expanded(
               child: Text(
                 'Personal Finances',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.titleMedium,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -276,9 +273,8 @@ class _NavItem extends StatelessWidget {
         ),
         title: Text(
           item.label,
-          style: TextStyle(
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
             color: isActive ? colorScheme.primary : colorScheme.onSurface,
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
           ),
         ),
         onTap: onTap,
@@ -330,7 +326,7 @@ class _ProfileTile extends StatelessWidget {
         title: Text(
           user?.name ?? 'User',
           overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Text(
           user?.email ?? '',

@@ -5,15 +5,11 @@ import 'menu_item_data.dart';
 class MobileDrawer extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
-  const MobileDrawer({
-    super.key,
-    required this.navigationShell,
-  });
+  const MobileDrawer({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context) {
-    final currentLocation =
-        GoRouterState.of(context).matchedLocation;
+    final currentLocation = GoRouterState.of(context).matchedLocation;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Drawer(
@@ -28,12 +24,7 @@ class MobileDrawer extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     'Personal Finances',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ],
               ),
@@ -41,16 +32,11 @@ class MobileDrawer extends StatelessWidget {
             const Divider(height: 1),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 children: [
                   for (final section in menuSections) ...[
                     if (section.title != null)
-                      _DrawerSectionHeader(
-                        title: section.title!,
-                      ),
+                      _DrawerSectionHeader(title: section.title!),
                     for (final item in section.items)
                       _DrawerItem(
                         item: item,
@@ -63,8 +49,7 @@ class MobileDrawer extends StatelessWidget {
                               item.branchIndex!,
                               initialLocation:
                                   item.branchIndex ==
-                                      navigationShell
-                                          .currentIndex,
+                                  navigationShell.currentIndex,
                             );
                           } else {
                             context.go(item.route);
@@ -90,19 +75,13 @@ class _DrawerSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 16,
-        top: 16,
-        bottom: 4,
-      ),
+      padding: const EdgeInsets.only(left: 16, top: 16, bottom: 4),
       child: Text(
         title,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurfaceVariant,
-              letterSpacing: 1.2,
-            ),
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+          letterSpacing: 1.2,
+        ),
       ),
     );
   }
@@ -127,27 +106,18 @@ class _DrawerItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: ListTile(
         dense: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         selected: isActive,
-        selectedTileColor:
-            colorScheme.primaryContainer.withValues(alpha: 0.3),
+        selectedTileColor: colorScheme.primaryContainer.withValues(alpha: 0.3),
         leading: Icon(
           isActive ? item.activeIcon : item.icon,
-          color: isActive
-              ? colorScheme.primary
-              : colorScheme.onSurfaceVariant,
+          color: isActive ? colorScheme.primary : colorScheme.onSurfaceVariant,
           size: 22,
         ),
         title: Text(
           item.label,
-          style: TextStyle(
-            color: isActive
-                ? colorScheme.primary
-                : colorScheme.onSurface,
-            fontWeight:
-                isActive ? FontWeight.w600 : FontWeight.normal,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: isActive ? colorScheme.primary : colorScheme.onSurface,
           ),
         ),
         onTap: onTap,

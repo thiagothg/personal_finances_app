@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 import 'color_extensions.dart';
+import 'text_theme.dart';
 
 final ThemeData lightTheme = _buildTheme(Brightness.light);
 final ThemeData darkTheme = _buildTheme(Brightness.dark);
@@ -10,11 +11,13 @@ final ThemeData appTheme = darkTheme;
 ThemeData _buildTheme(Brightness brightness) {
   final colorScheme = _buildColorScheme(brightness);
   final isDark = brightness == Brightness.dark;
+  final textTheme = buildTextTheme(isDark: isDark);
 
   return ThemeData(
     useMaterial3: true,
     brightness: brightness,
     colorScheme: colorScheme,
+    textTheme: textTheme,
     primaryColor: colorScheme.primary,
     scaffoldBackgroundColor: colorScheme.surface,
     canvasColor: colorScheme.surface,
@@ -29,6 +32,7 @@ ThemeData _buildTheme(Brightness brightness) {
       elevation: 0,
       centerTitle: false,
       surfaceTintColor: Colors.transparent,
+      titleTextStyle: textTheme.titleLarge,
     ),
     cardTheme: CardThemeData(
       color: isDark ? AppColors.darkCard : AppColors.lightCard,
@@ -87,7 +91,9 @@ ThemeData _buildTheme(Brightness brightness) {
     ),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: colorScheme.inverseSurface,
-      contentTextStyle: TextStyle(color: colorScheme.onInverseSurface),
+      contentTextStyle: textTheme.bodyMedium?.copyWith(
+        color: colorScheme.onInverseSurface,
+      ),
       behavior: SnackBarBehavior.floating,
     ),
     checkboxTheme: CheckboxThemeData(
@@ -134,6 +140,7 @@ ThemeData _buildTheme(Brightness brightness) {
         elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        textStyle: textTheme.labelLarge,
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
@@ -142,6 +149,13 @@ ThemeData _buildTheme(Brightness brightness) {
         side: BorderSide(color: colorScheme.outlineVariant),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        textStyle: textTheme.labelLarge,
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: colorScheme.primary,
+        textStyle: textTheme.labelLarge,
       ),
     ),
     filledButtonTheme: FilledButtonThemeData(
@@ -149,6 +163,7 @@ ThemeData _buildTheme(Brightness brightness) {
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        textStyle: textTheme.labelLarge,
       ),
     ),
     segmentedButtonTheme: SegmentedButtonThemeData(

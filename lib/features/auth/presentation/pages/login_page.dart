@@ -65,6 +65,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     ref.listen(loginControllerProvider, (previous, next) {
       if (next.hasError && !next.isLoading) {
@@ -103,13 +104,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               Text(
                 'Personal Finances',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: textTheme.headlineMedium,
               ),
               const SizedBox(height: 8),
               Text(
                 'Manage your finances easily',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: textTheme.bodyLarge,
               ),
               const SizedBox(height: 40),
 
@@ -191,7 +192,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     TextSpan(
                       text:
                           'Login failed: ${loginState.error.toString().replaceFirst('Exception: ', '').replaceAll('ArgumentError: ', '')}',
-                      style: TextStyle(
+                      style: textTheme.bodyMedium?.copyWith(
                         color: colorScheme.error,
                         fontWeight: FontWeight.bold,
                       ),
@@ -227,10 +228,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'OR',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
+                      child: Text('OR', style: textTheme.labelSmall),
                     ),
                     Expanded(
                       child: Container(
@@ -273,10 +271,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 child: Container(
                   color: colorScheme.primary,
                   child: Center(
-                    child: Icon(
-                      Icons.account_balance_wallet,
-                      size: 100,
-                      color: colorScheme.onPrimary,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.account_balance_wallet,
+                          size: 100,
+                          color: colorScheme.onPrimary,
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          'Personal Finances',
+                          style: textTheme.displayMedium?.copyWith(
+                            color: colorScheme.onPrimary,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

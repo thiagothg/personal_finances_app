@@ -51,6 +51,7 @@ dependencies:
   json_annotation: ^4.11.0
   riverpod_annotation: ^4.0.2
   flutter_dotenv: ^6.0.0
+  google_fonts: ^8.0.2
 
 
 dev_dependencies:
