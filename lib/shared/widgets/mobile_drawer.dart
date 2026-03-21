@@ -14,6 +14,7 @@ class MobileDrawer extends StatelessWidget {
 
     return Drawer(
       child: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             Padding(
@@ -22,10 +23,7 @@ class MobileDrawer extends StatelessWidget {
                 children: [
                   const Icon(Icons.account_balance_wallet),
                   const SizedBox(width: 12),
-                  Text(
-                    'Personal Finances',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  Text('Personal Finances', style: Theme.of(context).textTheme.titleMedium),
                 ],
               ),
             ),
@@ -35,8 +33,7 @@ class MobileDrawer extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 children: [
                   for (final section in menuSections) ...[
-                    if (section.title != null)
-                      _DrawerSectionHeader(title: section.title!),
+                    if (section.title != null) _DrawerSectionHeader(title: section.title!),
                     for (final item in section.items)
                       _DrawerItem(
                         item: item,
@@ -47,9 +44,7 @@ class MobileDrawer extends StatelessWidget {
                           if (item.branchIndex != null) {
                             navigationShell.goBranch(
                               item.branchIndex!,
-                              initialLocation:
-                                  item.branchIndex ==
-                                  navigationShell.currentIndex,
+                              initialLocation: item.branchIndex == navigationShell.currentIndex,
                             );
                           } else {
                             context.go(item.route);

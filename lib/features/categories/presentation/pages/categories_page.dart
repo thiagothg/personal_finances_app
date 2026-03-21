@@ -48,101 +48,135 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage>
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    return SafeArea(
-      child: RefreshIndicator(
-        onRefresh: () => ref.read(categoriesOverviewControllerProvider.notifier).reload(),
-        child: overviewState.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => ListView(
-            padding: const EdgeInsets.all(24),
-            children: [
-              SelectableText.rich(
-                TextSpan(
-                  text: error.toString().replaceFirst('Exception: ', ''),
-                  style: textTheme.bodyLarge?.copyWith(
-                    color: colorScheme.error,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return RefreshIndicator(
+      onRefresh: () => ref.read(categoriesOverviewControllerProvider.notifier).reload(),
+      child: overviewState.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, _) => ListView(
+          padding: const EdgeInsets.all(24),
+          children: [
+            SelectableText.rich(
+              TextSpan(
+                text: error.toString().replaceFirst('Exception: ', ''),
+                style: textTheme.bodyLarge?.copyWith(
+                  color: colorScheme.error,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 16),
-              FilledButton(
-                onPressed: () {
-                  ref.read(categoriesOverviewControllerProvider.notifier).reload();
-                },
-                child: const Text('Try again'),
+            ),
+            const SizedBox(height: 16),
+            FilledButton(
+              onPressed: () {
+                ref.read(categoriesOverviewControllerProvider.notifier).reload();
+              },
+              child: const Text('Try again'),
+            ),
+          ],
+        ),
+        data: (overview) {
+          final categories = overview.byType[_currentType] ?? const <Category>[];
+          final totals = overview.totalsByType[_currentType];
+
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 980),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _PageHeader(
+                      isDesktop: isDesktop,
+                      onAdd: () => _openCategoryForm(context, initialType: _currentType),
+                    ),
+                    if (mutationState.hasError && !mutationState.isLoading)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: SelectableText.rich(
+                          TextSpan(
+                            text: ref
+                                .read(categoryMutationControllerProvider.notifier)
+                                .errorMessage,
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.error,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    _SummaryRow(
+                      totalBudget: totals?.totalBudget ?? 0,
+                      totalCategories: totals?.count ?? categories.length,
+                      currencyFormat: _currencyFormat,
+                    ),
+                    const SizedBox(height: 24),
+                    TabBar(
+                      controller: _tabController,
+                      tabs: const [
+                        Tab(text: 'Income'),
+                        Tab(text: 'Expense'),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    if (categories.isEmpty)
+                      _EmptyState(
+                        onAdd: () {
+                          _openCategoryForm(context, initialType: _currentType);
+                        },
+                      )
+                    else
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          if (!isDesktop) {
+                            return Column(
+                              children: categories
+                                  .map(
+                                    (category) => Padding(
+                                      padding: const EdgeInsets.only(bottom: 12),
+                                      child: CategoryCard(
+                                        category: category,
+                                        onEdit: () =>
+                                            _openCategoryForm(context, category: category),
+                                        onDelete: () => _confirmDelete(context, category),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(growable: false),
+                            );
+                          }
+
+                          const spacing = AppSpacing.md;
+                          const minDesktopCardWidth = 320.0;
+                          final columns = (constraints.maxWidth / minDesktopCardWidth)
+                              .floor()
+                              .clamp(1, 3);
+                          final cardWidth =
+                              (constraints.maxWidth - (spacing * (columns - 1))) / columns;
+
+                          return Wrap(
+                            spacing: spacing,
+                            runSpacing: spacing,
+                            children: categories
+                                .map(
+                                  (category) => SizedBox(
+                                    width: cardWidth,
+                                    child: CategoryCard(
+                                      category: category,
+                                      onEdit: () => _openCategoryForm(context, category: category),
+                                      onDelete: () => _confirmDelete(context, category),
+                                    ),
+                                  ),
+                                )
+                                .toList(growable: false),
+                          );
+                        },
+                      ),
+                  ],
+                ),
               ),
             ],
-          ),
-          data: (overview) {
-            final categories = overview.byType[_currentType] ?? const <Category>[];
-            final totals = overview.totalsByType[_currentType];
-
-            return ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 980),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _PageHeader(
-                        isDesktop: isDesktop,
-                        onAdd: () => _openCategoryForm(context, initialType: _currentType),
-                      ),
-                      if (mutationState.hasError && !mutationState.isLoading)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: SelectableText.rich(
-                            TextSpan(
-                              text: ref
-                                  .read(categoryMutationControllerProvider.notifier)
-                                  .errorMessage,
-                              style: textTheme.bodyMedium?.copyWith(
-                                color: colorScheme.error,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      _SummaryRow(
-                        totalBudget: totals?.totalBudget ?? 0,
-                        totalCategories: totals?.count ?? categories.length,
-                        currencyFormat: _currencyFormat,
-                      ),
-                      const SizedBox(height: 24),
-                      TabBar(
-                        controller: _tabController,
-                        tabs: const [
-                          Tab(text: 'Income'),
-                          Tab(text: 'Expense'),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      if (categories.isEmpty)
-                        _EmptyState(
-                          onAdd: () {
-                            _openCategoryForm(context, initialType: _currentType);
-                          },
-                        )
-                      else
-                        ...categories.map(
-                          (category) => Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: CategoryCard(
-                              category: category,
-                              onEdit: () => _openCategoryForm(context, category: category),
-                              onDelete: () => _confirmDelete(context, category),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
+          );
+        },
       ),
     );
   }
@@ -170,7 +204,7 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage>
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Delete Category'),
+          title: Text('Delete Category', style: Theme.of(context).textTheme.titleMedium),
           content: Text('Delete "${category.name}"? This action cannot be undone.'),
           actions: [
             TextButton(
@@ -253,29 +287,36 @@ class _SummaryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final cards = [
-          _SummaryCard(
-            title: 'Total budget',
-            value: currencyFormat.format(totalBudget),
-            icon: Icons.account_balance_wallet_outlined,
-          ),
-          _SummaryCard(
-            title: 'Total categories',
-            value: '$totalCategories',
-            icon: Icons.category_outlined,
-          ),
-        ];
+    final isMobile = MediaQuery.sizeOf(context).width < 800;
+    final cards = [
+      _SummaryCard(
+        title: 'Total budget',
+        value: currencyFormat.format(totalBudget),
+        icon: Icons.account_balance_wallet_outlined,
+      ),
+      _SummaryCard(
+        title: 'Total categories',
+        value: '$totalCategories',
+        icon: Icons.category_outlined,
+      ),
+    ];
 
-        return Row(
-          children: [
-            Expanded(child: cards[0]),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(child: cards[1]),
-          ],
-        );
-      },
+    if (isMobile) {
+      return Column(
+        children: [
+          cards[0],
+          const SizedBox(height: AppSpacing.md),
+          cards[1],
+        ],
+      );
+    }
+
+    return Row(
+      children: [
+        Expanded(child: cards[0]),
+        const SizedBox(width: AppSpacing.md),
+        Expanded(child: cards[1]),
+      ],
     );
   }
 }
@@ -301,7 +342,6 @@ class _SummaryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             width: 44,
@@ -313,13 +353,25 @@ class _SummaryCard extends StatelessWidget {
             child: Icon(icon, color: summaryIconColor),
           ),
           const SizedBox(width: AppSpacing.sm),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: textTheme.bodyMedium),
-              const SizedBox(height: 4),
-              Text(value, style: textTheme.titleLarge),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: textTheme.bodyMedium,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: textTheme.titleLarge,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
         ],
       ),

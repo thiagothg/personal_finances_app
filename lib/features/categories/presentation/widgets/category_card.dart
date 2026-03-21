@@ -84,12 +84,16 @@ class CategoryCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Spent ${_currencyFormat.format(category.totalSpend)}',
-                  style: textTheme.bodyMedium,
+                Expanded(
+                  child: Text(
+                    'Spent ${_currencyFormat.format(category.totalSpend)}',
+                    style: textTheme.bodyMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
+                const SizedBox(width: 8),
                 Text(
                   progress == null
                       ? 'No budget set'
@@ -97,6 +101,8 @@ class CategoryCard extends StatelessWidget {
                   style: textTheme.labelLarge?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

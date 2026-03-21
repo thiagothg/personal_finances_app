@@ -23,9 +23,7 @@ ThemeData _buildTheme(Brightness brightness) {
     canvasColor: colorScheme.surface,
     dividerColor: colorScheme.outlineVariant,
     disabledColor: colorScheme.onSurface.withValues(alpha: 0.38),
-    extensions: const [
-      ExtraColors(success: AppColors.success, warning: AppColors.warning),
-    ],
+    extensions: const [ExtraColors(success: AppColors.success, warning: AppColors.warning)],
     appBarTheme: AppBarTheme(
       backgroundColor: colorScheme.surface,
       foregroundColor: colorScheme.onSurface,
@@ -58,19 +56,23 @@ ThemeData _buildTheme(Brightness brightness) {
       indicatorColor: colorScheme.primaryContainer,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         final isSelected = states.contains(WidgetState.selected);
+        final selectedForeground = colorScheme.onPrimaryContainer;
+        final navigationForeground = isDark
+            ? colorScheme.onSurface.withValues(alpha: 0.9)
+            : colorScheme.onSurfaceVariant;
         return TextStyle(
-          color: isSelected
-              ? colorScheme.primary
-              : colorScheme.onSurfaceVariant,
+          color: isSelected ? selectedForeground : navigationForeground,
           fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
         );
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         final isSelected = states.contains(WidgetState.selected);
+        final selectedForeground = colorScheme.onPrimaryContainer;
+        final navigationForeground = isDark
+            ? colorScheme.onSurface.withValues(alpha: 0.9)
+            : colorScheme.onSurfaceVariant;
         return IconThemeData(
-          color: isSelected
-              ? colorScheme.primary
-              : colorScheme.onSurfaceVariant,
+          color: isSelected ? selectedForeground : navigationForeground,
         );
       }),
     ),
@@ -91,9 +93,7 @@ ThemeData _buildTheme(Brightness brightness) {
     ),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: colorScheme.inverseSurface,
-      contentTextStyle: textTheme.bodyMedium?.copyWith(
-        color: colorScheme.onInverseSurface,
-      ),
+      contentTextStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onInverseSurface),
       behavior: SnackBarBehavior.floating,
     ),
     checkboxTheme: CheckboxThemeData(
@@ -105,9 +105,7 @@ ThemeData _buildTheme(Brightness brightness) {
       fillColor: isDark ? AppColors.darkCard : AppColors.lightCard,
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
-      hintStyle: TextStyle(
-        color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-      ),
+      hintStyle: TextStyle(color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8)),
       prefixIconColor: colorScheme.onSurfaceVariant,
       suffixIconColor: colorScheme.onSurfaceVariant,
       border: OutlineInputBorder(
@@ -180,9 +178,7 @@ ThemeData _buildTheme(Brightness brightness) {
           }
           return colorScheme.onSurfaceVariant;
         }),
-        side: WidgetStatePropertyAll(
-          BorderSide(color: colorScheme.outlineVariant),
-        ),
+        side: WidgetStatePropertyAll(BorderSide(color: colorScheme.outlineVariant)),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
@@ -195,13 +191,9 @@ ThemeData _buildTheme(Brightness brightness) {
       selectedTileColor: colorScheme.primaryContainer.withValues(alpha: 0.32),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
-    iconTheme: IconThemeData(
-      color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
-    ),
+    iconTheme: IconThemeData(color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary),
     iconButtonTheme: IconButtonThemeData(
-      style: IconButton.styleFrom(
-        foregroundColor: colorScheme.onSurfaceVariant,
-      ),
+      style: IconButton.styleFrom(foregroundColor: colorScheme.onSurfaceVariant),
     ),
   );
 }

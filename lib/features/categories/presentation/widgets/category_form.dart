@@ -35,10 +35,20 @@ class _CategoryFormState extends ConsumerState<CategoryForm> {
 
   CategoryType? _selectedType;
   String? _selectedIconKey;
-  Color _selectedColor = _categoryColorPalette.first;
+  Color _selectedColor = _quickColorPalette.first;
   bool _showIconError = false;
+  static const List<String> _quickIconKeys = [
+    'salary',
+    'shopping',
+    'food',
+    'transport',
+    'home',
+    'bills',
+    'health',
+    'travel',
+  ];
 
-  static const List<Color> _categoryColorPalette = [
+  static const List<Color> _quickColorPalette = [
     AppColors.primary,
     AppColors.secondary,
     AppColors.categoryFood,
@@ -46,11 +56,29 @@ class _CategoryFormState extends ConsumerState<CategoryForm> {
     AppColors.success,
     AppColors.warning,
     AppColors.error,
+  ];
+
+  static const List<Color> _extendedColorPalette = [
+    ..._quickColorPalette,
     Color(0xFFE11D48),
     Color(0xFF8B5CF6),
     Color(0xFF14B8A6),
     Color(0xFF0EA5E9),
     Color(0xFFF97316),
+    Color(0xFFEF4444),
+    Color(0xFFF59E0B),
+    Color(0xFF84CC16),
+    Color(0xFF22C55E),
+    Color(0xFF10B981),
+    Color(0xFF06B6D4),
+    Color(0xFF3B82F6),
+    Color(0xFF6366F1),
+    Color(0xFFA855F7),
+    Color(0xFFD946EF),
+    Color(0xFFF43F5E),
+    Color(0xFF64748B),
+    Color(0xFF0F172A),
+    Color(0xFF1F2937),
   ];
 
   bool get _isEditing => widget.category != null;
@@ -66,8 +94,7 @@ class _CategoryFormState extends ConsumerState<CategoryForm> {
 
     _selectedType = category?.type ?? widget.initialType;
     _selectedIconKey = category?.icon;
-    _selectedColor =
-        _parseColor(category?.color) ?? _categoryColorPalette.first;
+    _selectedColor = _parseColor(category?.color) ?? _quickColorPalette.first;
     _colorController = TextEditingController(text: _colorToHex(_selectedColor));
   }
 
@@ -117,6 +144,177 @@ class _CategoryFormState extends ConsumerState<CategoryForm> {
 
     if (success && mounted) {
       widget.onSuccess?.call();
+    }
+  }
+
+  List<CategoryIconOption> get _quickIconOptions => _quickIconKeys
+      .map(
+        (key) => categoryIconOptions
+            .where((option) => option.key == key)
+            .firstOrNull,
+      )
+      .whereType<CategoryIconOption>()
+      .toList(growable: false);
+
+  List<CategoryIconOption> get _visibleQuickIconOptions {
+    final quick = _quickIconOptions;
+    final selected = categoryIconOptions
+        .where((option) => option.key == _selectedIconKey)
+        .firstOrNull;
+
+    if (selected == null || quick.any((option) => option.key == selected.key)) {
+      return quick;
+    }
+
+    return [selected, ...quick.take(quick.length - 1)];
+  }
+
+  List<Color> get _visibleQuickColors {
+    final hasSelected = _quickColorPalette.any(
+      (color) => color.toARGB32() == _selectedColor.toARGB32(),
+    );
+    if (hasSelected) {
+      return _quickColorPalette;
+    }
+
+    return [
+      _selectedColor,
+      ..._quickColorPalette.take(_quickColorPalette.length - 1),
+    ];
+  }
+
+  List<Color> get _dialogColors {
+    final seen = <int>{};
+    final result = <Color>[];
+    for (final color in _extendedColorPalette) {
+      if (seen.add(color.toARGB32())) {
+        result.add(color);
+      }
+    }
+    return result;
+  }
+
+  Future<void> _openIconPickerDialog() async {
+    final selected = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        final colorScheme = Theme.of(context).colorScheme;
+
+        return AlertDialog(
+          title: const Text('Choose icon'),
+          content: SizedBox(
+            width: 380,
+            child: SingleChildScrollView(
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: categoryIconOptions
+                    .map(
+                      (option) => InkWell(
+                        key: ValueKey('dialog-icon-${option.key}'),
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () => Navigator.of(context).pop(option.key),
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: option.key == _selectedIconKey
+                                ? colorScheme.primaryContainer
+                                : colorScheme.surfaceContainerLow,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: option.key == _selectedIconKey
+                                  ? colorScheme.primary
+                                  : colorScheme.outlineVariant,
+                            ),
+                          ),
+                          child: Icon(option.icon),
+                        ),
+                      ),
+                    )
+                    .toList(growable: false),
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (selected != null) {
+      setState(() {
+        _selectedIconKey = selected;
+        _showIconError = false;
+      });
+    }
+  }
+
+  Future<void> _openColorPickerDialog() async {
+    final selected = await showDialog<Color>(
+      context: context,
+      builder: (context) {
+        final colorScheme = Theme.of(context).colorScheme;
+
+        return AlertDialog(
+          title: const Text('Choose color'),
+          content: SizedBox(
+            width: 380,
+            child: SingleChildScrollView(
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: _dialogColors
+                    .asMap()
+                    .entries
+                    .map((entry) {
+                      final color = entry.value;
+                      return InkWell(
+                        key: ValueKey(
+                          'dialog-color-${entry.key}-${_colorToHex(color)}',
+                        ),
+                        borderRadius: BorderRadius.circular(999),
+                        onTap: () => Navigator.of(context).pop(color),
+                        child: Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                            color: color,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color:
+                                  color.toARGB32() == _selectedColor.toARGB32()
+                                  ? colorScheme.onSurface
+                                  : Colors.transparent,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      );
+                    })
+                    .toList(growable: false),
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (selected != null) {
+      setState(() {
+        _selectedColor = selected;
+        _colorController.text = _colorToHex(selected);
+      });
     }
   }
 
@@ -206,12 +404,21 @@ class _CategoryFormState extends ConsumerState<CategoryForm> {
               },
             ),
             const SizedBox(height: 24),
-            Text('Icon', style: textTheme.titleMedium),
+            Row(
+              children: [
+                Expanded(child: Text('Icon', style: textTheme.titleMedium)),
+                TextButton.icon(
+                  onPressed: isLoading ? null : _openIconPickerDialog,
+                  icon: const Icon(Icons.grid_view_rounded, size: 18),
+                  label: const Text('More'),
+                ),
+              ],
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 10,
               runSpacing: 10,
-              children: categoryIconOptions
+              children: _visibleQuickIconOptions
                   .map((option) {
                     final isSelected = option.key == _selectedIconKey;
                     return InkWell(
@@ -226,11 +433,8 @@ class _CategoryFormState extends ConsumerState<CategoryForm> {
                               });
                             },
                       child: Container(
-                        width: 72,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 12,
-                        ),
+                        width: 48,
+                        height: 48,
                         decoration: BoxDecoration(
                           color: isSelected
                               ? colorScheme.primaryContainer
@@ -242,18 +446,7 @@ class _CategoryFormState extends ConsumerState<CategoryForm> {
                                 : colorScheme.outlineVariant,
                           ),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(option.icon),
-                            const SizedBox(height: 6),
-                            Text(
-                              option.label,
-                              textAlign: TextAlign.center,
-                              style: textTheme.labelSmall,
-                            ),
-                          ],
-                        ),
+                        child: Icon(option.icon),
                       ),
                     );
                   })
@@ -270,12 +463,21 @@ class _CategoryFormState extends ConsumerState<CategoryForm> {
                 ),
               ),
             const SizedBox(height: 24),
-            Text('Color', style: textTheme.titleMedium),
+            Row(
+              children: [
+                Expanded(child: Text('Color', style: textTheme.titleMedium)),
+                TextButton.icon(
+                  onPressed: isLoading ? null : _openColorPickerDialog,
+                  icon: const Icon(Icons.palette_outlined, size: 18),
+                  label: const Text('More'),
+                ),
+              ],
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 10,
               runSpacing: 10,
-              children: _categoryColorPalette
+              children: _visibleQuickColors
                   .map((color) {
                     final isSelected =
                         color.toARGB32() == _selectedColor.toARGB32();

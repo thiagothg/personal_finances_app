@@ -60,9 +60,7 @@ class _MobileShell extends StatelessWidget {
         ),
         title: Text(
           'Personal Finances',
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       drawer: MobileDrawer(navigationShell: navigationShell),
@@ -70,7 +68,7 @@ class _MobileShell extends StatelessWidget {
       bottomNavigationBar: navigationShell.currentIndex < 4
           ? MobileBottomNavBar(navigationShell: navigationShell)
           : null,
-      floatingActionButton: const NewTransactionFab(),
+      floatingActionButton: navigationShell.currentIndex == 1 ? const NewTransactionFab() : null,
     );
   }
 }

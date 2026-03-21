@@ -18,9 +18,7 @@ class CategoryFormPage extends StatelessWidget {
     final horizontalPadding = width < 600 ? AppSpacing.md : AppSpacing.lg;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_isEditing ? 'Edit Category' : 'New Category'),
-      ),
+      appBar: AppBar(title: Text(_isEditing ? 'Edit Category' : 'New Category')),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -56,10 +54,13 @@ Future<void> showCategoryFormDialog(
 
       return AlertDialog(
         insetPadding: EdgeInsets.symmetric(
-          horizontal: isCompact ? AppSpacing.md : AppSpacing.lg,
+          horizontal: isCompact ? AppSpacing.md : AppSpacing.xl,
           vertical: AppSpacing.lg,
         ),
-        title: Text(isEditing ? 'Edit Category' : 'New Category'),
+        title: Text(
+          isEditing ? 'Edit Category' : 'New Category',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         content: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 560),
           child: CategoryForm(

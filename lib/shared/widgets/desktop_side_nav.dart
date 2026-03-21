@@ -34,85 +34,104 @@ class DesktopSideNav extends ConsumerWidget {
         color: colorScheme.surface,
         border: Border(right: BorderSide(color: colorScheme.outlineVariant)),
       ),
-      child: Column(
-        children: [
-          _LogoRow(
-            expanded: expanded,
-            onToggle: () => ref.read(sideNavExpandedProvider.notifier).toggle(),
-          ),
-          const SizedBox(height: 8),
-          _NewTransactionButton(expanded: expanded),
-          const SizedBox(height: 8),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              children: [
-                for (final section in menuSections) ...[
-                  if (section.title != null && expanded) _SectionHeader(title: section.title!),
-                  if (section.title != null && !expanded) const Divider(height: 24),
-                  for (final item in section.items)
-                    _NavItem(
-                      item: item,
-                      expanded: expanded,
-                      isActive: _isActive(item, currentLocation),
-                      onTap: () => _onItemTap(context, item),
-                    ),
-                ],
-              ],
-            ),
-          ),
-          const Divider(height: 1),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: expanded
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SegmentedButton<bool>(
-                        segments: const [
-                          ButtonSegment(value: true, label: Text('EN')),
-                          ButtonSegment(value: false, label: Text('PT')),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Use actual animated width to avoid switching to wide content too early.
+          final showExpandedContent = constraints.maxWidth >= 220;
+
+          return Column(
+            children: [
+              _LogoRow(
+                expanded: showExpandedContent,
+                onToggle: () =>
+                    ref.read(sideNavExpandedProvider.notifier).toggle(),
+              ),
+              const SizedBox(height: 8),
+              _NewTransactionButton(expanded: showExpandedContent),
+              const SizedBox(height: 8),
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  children: [
+                    for (final section in menuSections) ...[
+                      if (section.title != null && showExpandedContent)
+                        _SectionHeader(title: section.title!),
+                      if (section.title != null && !showExpandedContent)
+                        const Divider(height: 24),
+                      for (final item in section.items)
+                        _NavItem(
+                          item: item,
+                          expanded: showExpandedContent,
+                          isActive: _isActive(item, currentLocation),
+                          onTap: () => _onItemTap(context, item),
+                        ),
+                    ],
+                  ],
+                ),
+              ),
+              const Divider(height: 1),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: showExpandedContent
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SegmentedButton<bool>(
+                            segments: const [
+                              ButtonSegment(value: true, label: Text('EN')),
+                              ButtonSegment(value: false, label: Text('PT')),
+                            ],
+                            selected: {isEn},
+                            onSelectionChanged: (_) {
+                              ref.read(localeProvider.notifier).toggle();
+                            },
+                            style: ButtonStyle(
+                              visualDensity: VisualDensity.compact,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              ref.read(themeModeProvider.notifier).toggle();
+                            },
+                            icon: Icon(
+                              isDark ? Icons.light_mode : Icons.dark_mode,
+                            ),
+                          ),
                         ],
-                        selected: {isEn},
-                        onSelectionChanged: (_) {
-                          ref.read(localeProvider.notifier).toggle();
-                        },
-                        style: ButtonStyle(
-                          visualDensity: VisualDensity.compact,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
+                      )
+                    : Column(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              ref.read(localeProvider.notifier).toggle();
+                            },
+                            icon: Text(
+                              isEn ? 'EN' : 'PT',
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              ref.read(themeModeProvider.notifier).toggle();
+                            },
+                            icon: Icon(
+                              isDark ? Icons.light_mode : Icons.dark_mode,
+                              size: 20,
+                            ),
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        onPressed: () {
-                          ref.read(themeModeProvider.notifier).toggle();
-                        },
-                        icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
-                      ),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          ref.read(localeProvider.notifier).toggle();
-                        },
-                        icon: Text(
-                          isEn ? 'EN' : 'PT',
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          ref.read(themeModeProvider.notifier).toggle();
-                        },
-                        icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode, size: 20),
-                      ),
-                    ],
-                  ),
-          ),
-          _ProfileTile(expanded: expanded, user: user, onTap: () => showProfileModal(context)),
-          const SizedBox(height: 8),
-        ],
+              ),
+              _ProfileTile(
+                expanded: showExpandedContent,
+                user: user,
+                onTap: () => showProfileModal(context),
+              ),
+              const SizedBox(height: 8),
+            ],
+          );
+        },
       ),
     );
   }
@@ -145,7 +164,10 @@ class _LogoRow extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: Row(
         children: [
-          IconButton(onPressed: onToggle, icon: Icon(expanded ? Icons.menu_open : Icons.menu)),
+          IconButton(
+            onPressed: onToggle,
+            icon: Icon(expanded ? Icons.menu_open : Icons.menu),
+          ),
           if (expanded) ...[
             const SizedBox(width: 8),
             const Icon(Icons.account_balance_wallet),
@@ -178,7 +200,9 @@ class _NewTransactionButton extends StatelessWidget {
           onPressed: () => showNewTransactionModal(context),
           icon: const Icon(Icons.add),
           label: const Text('New Transaction'),
-          style: FilledButton.styleFrom(minimumSize: const Size(double.infinity, 44)),
+          style: FilledButton.styleFrom(
+            minimumSize: const Size(double.infinity, 44),
+          ),
         ),
       );
     }
@@ -236,7 +260,9 @@ class _NavItem extends StatelessWidget {
           onPressed: onTap,
           icon: Icon(
             isActive ? item.activeIcon : item.icon,
-            color: isActive ? colorScheme.primary : colorScheme.onSurfaceVariant,
+            color: isActive
+                ? colorScheme.primary
+                : colorScheme.onSurfaceVariant,
           ),
           tooltip: item.label,
         ),
@@ -272,11 +298,17 @@ class _ProfileTile extends StatelessWidget {
   final dynamic user;
   final VoidCallback onTap;
 
-  const _ProfileTile({required this.expanded, required this.user, required this.onTap});
+  const _ProfileTile({
+    required this.expanded,
+    required this.user,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final initial = user?.name?.isNotEmpty == true ? user.name[0].toUpperCase() : '?';
+    final initial = user?.name?.isNotEmpty == true
+        ? user.name[0].toUpperCase()
+        : '?';
 
     if (!expanded) {
       return Padding(
