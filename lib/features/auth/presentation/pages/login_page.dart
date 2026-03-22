@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../shared/providers/auth/login_provider.dart';
-import '../../../../shared/providers/auth/biometric_auth_provider.dart';
+import 'package:personal_finances_app/features/auth/providers/login_provider.dart';
+import 'package:personal_finances_app/features/auth/providers/biometric_auth_provider.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});

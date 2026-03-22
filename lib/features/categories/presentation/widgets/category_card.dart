@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../domain/entities/categories/category.dart';
+import '../../domain/entities/category.dart';
 import '../utils/category_progress.dart';
 import 'category_icon_catalog.dart';
 

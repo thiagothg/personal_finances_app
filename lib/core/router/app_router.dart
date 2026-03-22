@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/domain/entities/auth_state.dart';
 import '../../shared/widgets/app_shell_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/splash/presentation/splash_page.dart';
@@ -20,8 +21,7 @@ import '../../features/cash_flow/presentation/pages/cash_flow_page.dart';
 import '../../features/spending/presentation/pages/spending_page.dart';
 import '../../features/trends/presentation/pages/trends_page.dart';
 
-import '../../domain/entities/auth/auth_state.dart';
-import '../../shared/providers/auth/auth_provider.dart';
+import 'package:personal_finances_app/features/auth/providers/auth_provider.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authControllerProvider);

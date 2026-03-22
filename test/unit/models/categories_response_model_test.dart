@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:personal_finances_app/data/models/categories/categories_response_model.dart';
-import 'package:personal_finances_app/domain/entities/categories/category.dart';
+import 'package:personal_finances_app/features/categories/data/models/categories_response_model.dart';
+import 'package:personal_finances_app/features/categories/domain/entities/category.dart';
 
 void main() {
   group('CategoriesResponseModel', () {

@@ -92,8 +92,10 @@ ThemeData _buildTheme(Brightness brightness) {
       circularTrackColor: colorScheme.primary.withValues(alpha: 0.12),
     ),
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: colorScheme.inverseSurface,
-      contentTextStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onInverseSurface),
+      backgroundColor: isDark ? AppColors.darkCard : colorScheme.inverseSurface,
+      contentTextStyle: textTheme.bodyMedium?.copyWith(
+        color: isDark ? Colors.white : colorScheme.onInverseSurface,
+      ),
       behavior: SnackBarBehavior.floating,
     ),
     checkboxTheme: CheckboxThemeData(

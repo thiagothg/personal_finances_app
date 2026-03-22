@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../domain/entities/categories/category.dart';
+import '../../domain/entities/category.dart';
 import '../../providers/category_providers.dart';
 import '../widgets/category_card.dart';
 import 'category_form_page.dart';

@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../core/network/dio_provider.dart';
-import '../../../data/datasource/category_remote_datasource.dart';
-import '../../../data/repositories/category_repository_impl.dart';
-import '../../../domain/entities/categories/categories_overview.dart';
-import '../../../domain/entities/categories/category.dart';
-import '../../../domain/repositories/category_repository.dart';
-import '../../../domain/usecases/categories/create_category_usecase.dart';
-import '../../../domain/usecases/categories/delete_category_usecase.dart';
-import '../../../domain/usecases/categories/get_categories_usecase.dart';
-import '../../../domain/usecases/categories/update_category_usecase.dart';
+import 'package:personal_finances_app/features/auth/providers/auth_providers.dart';
+import '../data/datasource/category_remote_datasource.dart';
+import '../data/repositories/category_repository_impl.dart';
+import '../domain/entities/categories_overview.dart';
+import '../domain/entities/category.dart';
+import '../domain/repositories/category_repository.dart';
+import '../domain/usecases/create_category_usecase.dart';
+import '../domain/usecases/delete_category_usecase.dart';
+import '../domain/usecases/get_categories_usecase.dart';
+import '../domain/usecases/update_category_usecase.dart';
 
 part 'category_providers.g.dart';
 

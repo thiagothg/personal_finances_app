@@ -11,12 +11,13 @@
 
 ## Folder structure (recommended)
 
-```
+```text
 flutter_finance_app/
 ├─ lib/
 │ ├─ core/
 │ │ ├─ theme/
 │ │ ├─ router/
+│ │ ├─ network/
 │ │ ├─ constants/
 │ │ └─ utils/
 │ ├─ shared/
@@ -24,22 +25,19 @@ flutter_finance_app/
 │ │ ├─ services/
 │ │ └─ providers/
 │ ├─ features/
+│ │ ├─ auth/
+│ │ │ ├─ data/
+│ │ │ ├─ domain/
+│ │ │ ├─ presentation/
+│ │ │ └─ providers/
+│ │ ├─ categories/
+│ │ │ ├─ data/
+│ │ │ ├─ domain/
+│ │ │ ├─ presentation/
+│ │ │ └─ providers/
 │ │ ├─ dashboard/
 │ │ ├─ transactions/
-│ │ ├─ accounts/
-│ │ ├─ people/
-│ │ ├─ categories/
-│ │ ├─ investments/
 │ │ └─ settings/
-│ ├─ data/
-│ │ ├─ models/
-│ │ ├─ dto/
-│ │ ├─ repositories/
-│ │ └─ datasource/
-│ ├─ domain/
-│ │ ├─ entities/
-│ │ ├─ repositories/
-│ │ └─ usecases/
 │ ├─ app.dart
 │ └─ main.dart
 ├─ test/

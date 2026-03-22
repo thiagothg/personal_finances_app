@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../shared/providers/auth/auth_provider.dart';
+import 'package:personal_finances_app/features/auth/providers/auth_provider.dart';
 
 class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});

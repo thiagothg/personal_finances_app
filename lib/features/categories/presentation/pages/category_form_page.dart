@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../domain/entities/categories/category.dart';
+import '../../domain/entities/category.dart';
 import '../widgets/category_form.dart';
 
 class CategoryFormPage extends StatelessWidget {

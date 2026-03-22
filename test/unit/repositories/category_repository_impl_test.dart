@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:personal_finances_app/data/datasource/category_remote_datasource.dart';
-import 'package:personal_finances_app/data/models/categories/categories_response_model.dart';
-import 'package:personal_finances_app/data/models/categories/category_model.dart';
-import 'package:personal_finances_app/data/models/categories/create_or_update_category_request_model.dart';
-import 'package:personal_finances_app/data/repositories/category_repository_impl.dart';
-import 'package:personal_finances_app/domain/entities/categories/category.dart';
-import 'package:personal_finances_app/domain/entities/categories/category_totals.dart';
+import 'package:personal_finances_app/features/categories/data/datasource/category_remote_datasource.dart';
+import 'package:personal_finances_app/features/categories/data/models/categories_response_model.dart';
+import 'package:personal_finances_app/features/categories/data/models/category_model.dart';
+import 'package:personal_finances_app/features/categories/data/models/create_or_update_category_request_model.dart';
+import 'package:personal_finances_app/features/categories/data/repositories/category_repository_impl.dart';
+import 'package:personal_finances_app/features/categories/domain/entities/category.dart';
+import 'package:personal_finances_app/features/categories/domain/entities/category_totals.dart';
 
 class MockCategoryRemoteDatasource extends Mock
     implements CategoryRemoteDatasource {}

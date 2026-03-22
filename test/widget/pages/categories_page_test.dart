@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:personal_finances_app/domain/entities/categories/categories_overview.dart';
-import 'package:personal_finances_app/domain/entities/categories/category.dart';
-import 'package:personal_finances_app/domain/entities/categories/category_totals.dart';
-import 'package:personal_finances_app/domain/repositories/category_repository.dart';
+import 'package:personal_finances_app/features/categories/domain/entities/categories_overview.dart';
+import 'package:personal_finances_app/features/categories/domain/entities/category.dart';
+import 'package:personal_finances_app/features/categories/domain/entities/category_totals.dart';
+import 'package:personal_finances_app/features/categories/domain/repositories/category_repository.dart';
 import 'package:personal_finances_app/features/categories/presentation/pages/categories_page.dart';
 import 'package:personal_finances_app/features/categories/providers/category_providers.dart';
 

@@ -2,10 +2,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:personal_finances_app/data/datasource/auth/auth_remote_datasource.dart';
-import 'package:personal_finances_app/data/models/user_model.dart';
-import 'package:personal_finances_app/data/repositories/auth_repository_impl.dart';
+import 'package:personal_finances_app/features/auth/data/models/user_model.dart';
 import 'package:personal_finances_app/domain/entities/user.dart';
+import 'package:personal_finances_app/features/auth/data/datasource/auth_remote_datasource.dart';
+import 'package:personal_finances_app/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:personal_finances_app/core/network/token_storage.dart';
 
 class MockAuthRemoteDatasource extends Mock implements AuthRemoteDatasource {}
 
@@ -13,21 +14,26 @@ class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
 
 class MockLocalAuthentication extends Mock implements LocalAuthentication {}
 
+class MockTokenStorage extends Mock implements TokenStorage {}
+
 void main() {
   late AuthRepositoryImpl authRepository;
   late MockAuthRemoteDatasource mockDatasource;
   late MockFlutterSecureStorage mockSecureStorage;
   late MockLocalAuthentication mockLocalAuth;
+  late MockTokenStorage mockTokenStorage;
 
   setUp(() {
     mockDatasource = MockAuthRemoteDatasource();
     mockSecureStorage = MockFlutterSecureStorage();
     mockLocalAuth = MockLocalAuthentication();
+    mockTokenStorage = MockTokenStorage();
 
     authRepository = AuthRepositoryImpl(
       datasource: mockDatasource,
       secureStorage: mockSecureStorage,
       localAuth: mockLocalAuth,
+      tokenStorage: mockTokenStorage,
     );
   });
 
@@ -42,16 +48,32 @@ void main() {
   );
   const testUser = User(id: '1', name: 'Test User', email: testEmail, token: testToken);
 
+  final testLoginResult = LoginResult(
+    user: testUserModel,
+    accessToken: testToken,
+    refreshToken: 'refresh_token',
+    accessExpiresAt: DateTime(2026),
+    refreshExpiresAt: DateTime(2026),
+  );
+
   group('AuthRepositoryImpl', () {
     group('login', () {
       test('should call datasource.login with correct email and password', () async {
         when(
           () => mockDatasource.login(testEmail, testPassword),
-        ).thenAnswer((_) async => testUserModel);
+        ).thenAnswer((_) async => testLoginResult);
         when(
           () => mockSecureStorage.write(
             key: any(named: 'key'),
             value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockTokenStorage.saveTokens(
+            accessToken: any(named: 'accessToken'),
+            refreshToken: any(named: 'refreshToken'),
+            accessExpiresAt: any(named: 'accessExpiresAt'),
+            refreshExpiresAt: any(named: 'refreshExpiresAt'),
           ),
         ).thenAnswer((_) async {});
 
@@ -63,11 +85,19 @@ void main() {
       test('should return User when login is successful', () async {
         when(
           () => mockDatasource.login(testEmail, testPassword),
-        ).thenAnswer((_) async => testUserModel);
+        ).thenAnswer((_) async => testLoginResult);
         when(
           () => mockSecureStorage.write(
             key: any(named: 'key'),
             value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockTokenStorage.saveTokens(
+            accessToken: any(named: 'accessToken'),
+            refreshToken: any(named: 'refreshToken'),
+            accessExpiresAt: any(named: 'accessExpiresAt'),
+            refreshExpiresAt: any(named: 'refreshExpiresAt'),
           ),
         ).thenAnswer((_) async {});
 
@@ -79,11 +109,19 @@ void main() {
       test('should store token after successful login', () async {
         when(
           () => mockDatasource.login(testEmail, testPassword),
-        ).thenAnswer((_) async => testUserModel);
+        ).thenAnswer((_) async => testLoginResult);
         when(
           () => mockSecureStorage.write(
             key: any(named: 'key'),
             value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockTokenStorage.saveTokens(
+            accessToken: any(named: 'accessToken'),
+            refreshToken: any(named: 'refreshToken'),
+            accessExpiresAt: any(named: 'accessExpiresAt'),
+            refreshExpiresAt: any(named: 'refreshExpiresAt'),
           ),
         ).thenAnswer((_) async {});
 

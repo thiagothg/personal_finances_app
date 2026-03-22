@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../domain/entities/auth/auth_state.dart';
-import '../../../shared/providers/auth/auth_provider.dart';
+import 'package:personal_finances_app/features/auth/providers/auth_provider.dart';
+
+import '../../auth/domain/entities/auth_state.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});

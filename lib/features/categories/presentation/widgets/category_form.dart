@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../domain/entities/categories/category.dart';
+import '../../domain/entities/category.dart';
 import '../../providers/category_providers.dart';
 import 'category_icon_catalog.dart';
 
