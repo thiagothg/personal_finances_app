@@ -68,7 +68,8 @@ class _MobileShell extends StatelessWidget {
       bottomNavigationBar: navigationShell.currentIndex < 4
           ? MobileBottomNavBar(navigationShell: navigationShell)
           : null,
-      floatingActionButton: navigationShell.currentIndex == 1 ? const NewTransactionFab() : null,
+      floatingActionButton: navigationShell.currentIndex < 4 ? const NewTransactionFab() : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

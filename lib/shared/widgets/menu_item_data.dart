@@ -52,6 +52,7 @@ const List<MenuSection> menuSections = [
         icon: Icons.flag_outlined,
         activeIcon: Icons.flag,
         route: '/goals',
+        branchIndex: 5,
       ),
     ],
   ),
@@ -63,13 +64,14 @@ const List<MenuSection> menuSections = [
         icon: Icons.people_outlined,
         activeIcon: Icons.people,
         route: '/people',
+        branchIndex: 6,
       ),
       MenuItemData(
         label: 'Categories',
         icon: Icons.category_outlined,
         activeIcon: Icons.category,
         route: '/categories',
-        branchIndex: 6,
+        branchIndex: 7,
       ),
       MenuItemData(
         label: 'Accounts',

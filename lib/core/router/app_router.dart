@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/domain/entities/auth_state.dart';
+import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../shared/widgets/app_shell_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/splash/presentation/splash_page.dart';
@@ -61,6 +63,11 @@ final routerProvider = Provider<GoRouter>((ref) {
                 name: 'investments',
                 builder: (c, s) => const InvestmentsPage(),
               ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(path: '/profile', name: 'profile', builder: (c, s) => const ProfilePage()),
             ],
           ),
           StatefulShellBranch(

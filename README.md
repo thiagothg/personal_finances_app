@@ -202,3 +202,15 @@ Default Flutter testing library.
 
 ---
 
+## 📅 Dates and Timezones
+
+**Backend (PHP/Laravel)**: Always use `UTC` for dates and times.
+- Ensure `docker/php.ini` has `date.timezone = UTC`.
+- Database records must store timestamps in UTC.
+- The API MUST always return and expect dates in UTC (ISO-8601 format).
+
+**Frontend (Flutter)**:
+- Parse received UTC strings from the API.
+- ONLY convert to the user's Local Timezone when displaying dates on the UI.
+
+**Tokens (Sanctum)**: Let Laravel handle token expiration natively via config values (`SANCTUM_ACCESS_TOKEN_TTL_MINUTES` and `SANCTUM_REFRESH_TOKEN_TTL_DAYS`). Do not manually verify tokens on the PHP side. If looking to prevent unnecessary network requests, the frontend can locally check expiration by comparing the token's UTC expiration date against the device's current UTC time.

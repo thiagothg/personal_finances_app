@@ -18,7 +18,7 @@ class MobileBottomNavBar extends StatelessWidget {
       icon: Icons.trending_up_outlined,
       activeIcon: Icons.trending_up,
     ),
-    _MobileNavItem(label: 'Settings', icon: Icons.settings_outlined, activeIcon: Icons.settings),
+    _MobileNavItem(label: 'Profile', icon: Icons.person_outline, activeIcon: Icons.person),
   ];
 
   @override
@@ -39,7 +39,8 @@ class MobileBottomNavBar extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
         child: Row(
           children: [
-            for (var index = 0; index < _items.length; index++)
+            for (var index = 0; index < _items.length; index++) ...[
+              if (index == 2) const Expanded(child: SizedBox.shrink()),
               Expanded(
                 child: _MobileBottomNavBarItem(
                   item: _items[index],
@@ -53,6 +54,7 @@ class MobileBottomNavBar extends StatelessWidget {
                   },
                 ),
               ),
+            ],
           ],
         ),
       ),
@@ -76,7 +78,7 @@ class _MobileBottomNavBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final selectedForeground = colorScheme.onPrimaryContainer;
+    final selectedForeground = colorScheme.primary;
     final unselectedForeground = isDark
         ? colorScheme.onSurface.withValues(alpha: 0.9)
         : colorScheme.onSurfaceVariant;
@@ -90,12 +92,12 @@ class _MobileBottomNavBarItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 220),
-            curve: Curves.easeOutCubic,
+            // curve: Curves.easeOutCubic,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            decoration: BoxDecoration(
-              color: selected ? colorScheme.primaryContainer : Colors.transparent,
-              borderRadius: BorderRadius.circular(18),
-            ),
+            // decoration: BoxDecoration(
+            //   color: selected ? colorScheme.primaryContainer : Colors.transparent,
+            //   borderRadius: BorderRadius.circular(18),
+            // ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

@@ -27,13 +27,14 @@ class DesktopSideNav extends ConsumerWidget {
     final width = expanded ? 280.0 : 72.0;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      width: width,
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        border: Border(right: BorderSide(color: colorScheme.outlineVariant)),
-      ),
+    return Material(
+      color: colorScheme.surface,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: width,
+        decoration: BoxDecoration(
+          border: Border(right: BorderSide(color: colorScheme.outlineVariant)),
+        ),
       child: LayoutBuilder(
         builder: (context, constraints) {
           // Use actual animated width to avoid switching to wide content too early.
@@ -126,7 +127,7 @@ class DesktopSideNav extends ConsumerWidget {
           );
         },
       ),
-    );
+    ));
   }
 
   bool _isActive(MenuItemData item, String location) {
@@ -248,7 +249,9 @@ class _NavItem extends StatelessWidget {
           onPressed: onTap,
           icon: Icon(
             isActive ? item.activeIcon : item.icon,
-            color: isActive ? colorScheme.primary : colorScheme.onSurfaceVariant,
+            color: isActive 
+                ? ListTileTheme.of(context).selectedColor ?? colorScheme.primary 
+                : ListTileTheme.of(context).iconColor ?? colorScheme.onSurfaceVariant,
           ),
           tooltip: item.label,
         ),
@@ -259,18 +262,18 @@ class _NavItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: ListTile(
         dense: true,
+        visualDensity: VisualDensity.comfortable,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         selected: isActive,
-        selectedTileColor: colorScheme.primaryContainer.withValues(alpha: 0.3),
-        leading: Icon(
-          isActive ? item.activeIcon : item.icon,
-          color: isActive ? colorScheme.primary : colorScheme.onSurfaceVariant,
-          size: 22,
-        ),
+        hoverColor: colorScheme.primaryContainer.withValues(alpha: 0.3),
+        splashColor: colorScheme.primaryContainer.withValues(alpha: 0.3),
+        leading: Icon(isActive ? item.activeIcon : item.icon, size: 22),
         title: Text(
           item.label,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: isActive ? colorScheme.primary : colorScheme.onSurface,
+            color: isActive 
+                ? ListTileTheme.of(context).selectedColor ?? colorScheme.primary 
+                : ListTileTheme.of(context).textColor ?? colorScheme.onSurface,
           ),
         ),
         onTap: onTap,
